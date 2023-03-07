@@ -403,3 +403,11 @@ def EN_old(formula,electrones,superconductors_list):
     electronegativity_list = np.array(electronegativity_list)
     electronegativity_list = electronegativity_list.reshape(-1, 1)
     return(electronegativity_list)
+def shap_mean(values,n):
+    i=0
+    suma=0
+    for value in values:
+        suma+=value[:n]
+        i=i+1
+    mean=suma/i
+    return(mean)    

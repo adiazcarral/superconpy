@@ -10,6 +10,7 @@ Created on Fri Dec  2 14:19:50 2022
 import pandas as pd
 import re
 import numpy as np
+import scipy as sp
 
 electronegativitycsv =pd.read_csv("/work/mroitegui/Superconductors/data/periodic_table_of_elements.csv")
 noble_gases = {'He': '1s2',
@@ -85,7 +86,7 @@ def mval(formula,electrones,superconductors_list):
     mval = mval.reshape(-1,1)
     return (mval)    
 
-def mrad(formyula,electrones,superconductors_list):
+def mrad(formula,electrones,superconductors_list):
 
     
     rad_dict = dict(zip(electrones['Elemento'],electrones['AtomicRadius']))   
@@ -411,3 +412,80 @@ def shap_mean(values,n):
         i=i+1
     mean=suma/i
     return(mean)    
+
+def mixing_entropy(superconductors_list):
+    #### Mixing Entropy ####
+    R = sp.constants.gas_constant
+    smixx = []
+    for superconductor in superconductors_list:
+       atomostotal = 0        
+       ci = []
+       prueba = re.findall(
+           "([A-Z][^A-Z]*)", superconductor
+       )  # dividimos el superconductor en sus compoentes
+       for x in prueba:
+           if (
+               x.isalpha()
+           ):  # Suma un uno al final del elemento en caso de que el numero de atomos no aparezca en la tabla
+               x = x + "1"
+           # elementos = re.sub("[^a-zA-Z]", "", x)           
+           cantidad_de_atomosstr = re.sub("[a-zA-Z]", "", x)
+           cantidad_de_atomos = float(cantidad_de_atomosstr)           
+           atomostotal += cantidad_de_atomos
+           # atoms = float(cantidad_de_atomos) 
+           ci.append(cantidad_de_atomos)
+       cii = ci
+       # print(cii)
+       cii = np.asarray(cii)
+       cii = cii/atomostotal
+       smix = -R*np.sum(cii*np.log(cii)) 
+       smixx.append(smix)
+    smixx=np.array(smixx)
+    smixx=smixx.reshape(-1,1)
+       #### -------------- ####
+    return(smixx) 
+
+def delta(electrones, superconductors_list):
+    #### Mixing Entropy ####
+    delta = []
+    rad_dict = dict(zip(electrones['Elemento'],electrones['AtomicRadius']))   
+    mrad=[] 
+    for superconductor in superconductors_list:
+       atomostotal = 0
+       radtot = 0
+       ci = []
+       ri = []
+       prueba = re.findall("([A-Z][^A-Z]*)", superconductor)  # dividimos el superconductor en sus compoentes
+       for x in prueba:
+           if (
+               x.isalpha()
+           ):  # Suma un uno al final del elemento en caso de que el numero de atomos no aparezca en la tabla
+               x = x + "1"
+           elementos = re.sub("[^a-zA-Z]", "", x)
+           rad=(rad_dict[elementos])
+           cantidad_de_atomosstr = re.sub("[a-zA-Z]", "", x)
+           cantidad_de_atomos = float(cantidad_de_atomosstr)           
+           atomostotal += cantidad_de_atomos
+           cantidadrad=cantidad_de_atomos*rad
+           radtot+=cantidadrad
+           ci.append(cantidad_de_atomos)
+           ri.append(rad)
+       
+       mrad1=radtot/atomostotal
+       mrad = np.append(mrad, mrad1)
+       mrad = np.array(mrad)
+       mrad = mrad.reshape(-1,1)
+       cii = ci
+       rii = ri
+       # print(cii)
+       # print(rii)
+       cii = np.asarray(cii)
+       cii = cii/atomostotal
+       rii = np.asarray(rii)
+       deltaa = 100*np.sqrt(np.sum(cii*(1-(rii/mrad))**2))
+       delta.append(deltaa)
+    delta=np.array(delta)
+    delta=delta.reshape(-1,1)
+       #### -------------- ####
+    return(delta) 
+                

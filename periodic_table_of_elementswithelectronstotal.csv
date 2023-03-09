@@ -1,0 +1,119 @@
+N_atomico,Elemento,Nombre,Masa,Periodo,Grupo,Estructura,Conf_electronica,Descubrimiento,Densidad,s,p,d,f,elementmend,mendnumber,Structurenumber,val,AtomicRadius,FIE,TC,EC
+1,H,Hidrogeno,1.007,1,1,Hexagonal, 1s1,1766,0.0899,1,0,0,0,He,1,1,1,0.53,13.6,0.001815,0
+2,He,Helio,4.002,1,18,Hexagonal, 1s2,1895,0.1785,2,0,0,0,Ne,2,1,2,0.31,24.59,0.00152,0
+3,Li,Litio,6.941,2,1,Cubica centrada en el cuerpo, He  2s1,1817,535,3,0,0,0,Ar,3,2,1,1.67,5.39,0.847,11000000
+4,Be,Berilio,9.012,2,2,Cubica simple, He  2s2,1797,1848,4,0,0,0,Kr,4,3,2,1.12,9.32,2.01,25000000
+5,B,Boro,10.81,2,13,Romboedrica, He  2s2 2p1 ,1808,2460,4,1,0,0,Xe,5,4,3,0.87,8.3,0.274,0.0001
+6,C,Carbono,12.01,2,14,Hexagonal, He  2s2 2p2,Prehistoria,2267,4,2,0,0,Rn,6,1,4,0.67,11.26,1.29,100000
+7,N,Nitrogeno,14,2,15,Hexagonal, He  2s2 2p3,1772,1.2506,4,3,0,0,Fr,7,1,5,0.56,14.53,0.0002598,0
+8,O,Oxigeno,15.99,2,16,Cubica simple, He  2s2 2p4,1774,1429,4,4,0,0,Cs,8,3,6,0.48,13.62,0.0002674,0
+9,F,Fluor,18.99,2,17,Cubica simple, He  2s2 2p5 ,1886,1696,4,5,0,0,Rb,9,3,7,0.42,17.42,0.000279,0
+10,Ne,Neon,20.17,2,18,Cubica centrada en caras, He  2s2 2p6 ,1898,0.8999,4,6,0,0,K,10,5,8,0.38,21.56,0.000493,0
+11,Na,Sodio,22.98,3,1,Cubica centrada en el cuerpo, Ne  3s1 ,1807,968,5,6,0,0,Na,11,2,1,1.9,5.14,1.41,21000000
+12,Mg,Magnesio,24.3,3,2,Hexagonal, Ne  3s2 ,1755,1738,6,6,0,0,Li,12,1,2,1.45,7.65,1.56,23000000
+13,Al,Aluminio,26.98,3,13,Cubica centrada en caras, Ne  3s2 3p1 ,1825,2698.4,6,7,0,0,Ra,13,5,3,1.18,5.99,2.37,38000000
+14,Si,Silicio,28.08,3,14,Cubica centrada en caras, Ne  3s2 3p2 ,1824,2.33,6,8,0,0,Ba,14,5,4,1.11,8.15,1.48,1000
+15,P,Fosforo,30.97,3,15,Cubica simple, Ne  3s2 3p3 ,1669,1823,6,9,0,0,Sr,15,3,5,0.98,10.49,0.00235,10000000
+16,S,Azufre,32.06,3,16,Cubica centrada en caras, Ne  3s2 3p4 ,Prehistoria,1960,6,10,0,0,Ca,16,5,6,0.88,10.36,0.00269,1E-15
+17,Cl,Cloro,35.45,3,17,Ortorrombica centrada en las bases, Ne  3s2 3p5 ,1774,3214,6,11,0,0,Eu,17,6,7,0.79,12.97,0.000089,0.01
+18,Ar,Argon,39.94,3,18,Cubica centrada en caras, Ne  3s2 3p6 ,1894,1784,6,12,0,0,Yb,18,5,8,0.71,15.76,0.0001772,0
+19,K,Potasio,39.09,4,1,Cubica centrada en caras, Ar  4s1 ,1807,856,7,12,0,0,Lu,19,5,1,2.43,4.34,1.024,14000000
+20,Ca,Calcio,40.07,4,2,Cubica centrada en caras, Ar  4s1 ,1808,1550,7,12,0,0,Tm,20,5,2,1.94,6.11,2.01,29000000
+21,Sc,Escandio,44.95,4,3,Hexagonal, Ar  3d1 4s2 ,1879,2985,8,12,1,0,Y,21,1,3,1.84,6.56,0.158,1800000
+22,Ti,Titanio,47.86,4,4,Hexagonal, Ar  3d2 4s2 ,1791,4507,8,12,2,0,Er,22,1,4,1.76,6.83,0.219,2500000
+23,V,Vanadio,50.94,4,5,Cubica centrada en el cuerpo, Ar  3d3 4s2 ,1801,6110,8,12,3,0,Ho,23,2,5,1.71,6.75,0.307,5000000
+24,Cr,Cromo,51.99,4,6,Cubica centrada en el cuerpo, Ar  3d5 4s1 ,1797,7140,7,12,4,0,Dy,24,2,6,1.66,6.77,0.937,7900000
+25,Mn,Manganeso,54.93,4,7,Cubica centrada en el cuerpo, Ar  3d5 4s2 ,1774,7430,8,12,5,0,Tb,25,2,7,1.61,7.43,0.0782,620000
+26,Fe,Hierro,55.84,4,8,Cubica centrada en el cuerpo, Ar  3d6 4s2 ,Prehistoria,7874,8,12,6,0,Gd,26,2,8,1.56,7.9,0.802,10000000
+27,Co,Cobalto,58.93,4,9,Cubica centrada en caras, Ar  3d7 4s2 ,1735,8900,8,12,7,0,Sm,27,5,9,1.52,7.88,1,17000000
+28,Ni,Niquel,58.69,4,10,Cubica centrada en caras, Ar  3d8 4s2 ,1751,8908,8,12,8,0,Pm,28,5,10,1.49,7.64,0.907,14000000
+29,Cu,Cobre,63.54,4,11,Cubica centrada en caras, Ar  3d10 4s1 ,Prehistoria,8960,7,12,10,0,Nd,29,5,11,1.45,7.73,4.01,59000000
+30,Zn,Zinc,65.4,4,12,Hexagonal, Ar  3d10 4s2 ,Prehistoria,7140,8,12,10,0,Pr,30,1,12,1.42,9.39,1.16,17000000
+31,Ga,Galio,69.72,4,13,Ortorrombica centrada en las bases, Ar  3d10 4s2 4p1 ,1875,5904,8,13,10,0,Ce,31,6,3,1.36,6,0.406,7100000
+32,Ge,Germanio,72.64,4,14,Cubica centrada en las caras, Ar  3d10 4s2 4p2 ,1886,5323,8,14,10,0,La,32,5,4,1.25,7.9,0.599,2000
+33,As,Arsenico,74.92,4,15,Romboedrica, Ar  3d10 4s2 4p3 ,1250,5727,8,15,10,0,Ac,33,4,5,1.14,9.79,0.502,3300000
+34,Se,Selenio,78.96,4,16,Hexagonal, Ar  3d10 4s2 4p4 ,1817,4790,8,16,10,0,Th,34,1,6,1.03,9.75,0.0204,0
+35,Br,Bromo,79.9,4,17,Ortorrombica centrada en las bases, Ar  3d10 4s2 4p5 ,1826,3119,8,17,10,0,Pa,35,6,7,0.94,11.81,0.00122,1E-10
+36,Kr,Kripton,83.79,4,18,Cubica centrada en las caras, Ar  3d10 4s2 4p6 ,1898,3708,8,18,10,0,U,36,5,8,0.88,14,0.0000949,0
+37,Rb,Rubidio,85.46,5,1,Cubica centrada en el cuerpo, Kr  5s1 ,1861,1532,9,18,10,0,Np,37,2,1,2.65,4.18,0.582,8300000
+38,Sr,Estroncio,87.62,5,2,Cubica centrada en las caras, Kr  5s2 ,1790,2630,10,18,10,0,Pu,38,5,2,2.19,5.69,0.353,7700000
+39,Y,Itrio,88.9,5,3,Hexagonal, Kr  4d1 5s2 ,1794,4472,10,18,11,0,Am,39,1,3,2.12,6.22,0.172,1800000
+40,Zr,Circonio,91.22,5,4,Hexagonal, Kr  4d2 5s2 ,1789,6501,10,18,12,0,Cm,40,1,4,2.06,6.63,0.227,2400000
+41,Nb,Niobio,92.9,5,5,Cubica centrada en el cuerpo, Kr  4d4 5s1 ,1801,8570,9,18,14,0,Bk,41,2,5,1.98,6.76,0.537,6700000
+42,Mo,Molibdeno,95.94,5,6,Cubica centrada en el cuerpo, Kr  4d5 5s1 ,1778,10280,9,18,15,0,Cf,42,2,6,1.9,7.09,1.38,20000000
+43,Tc,Tecnecio,98.9,5,7,Hexagonal, Kr  4d6 5s1 ,1937,11500,9,18,16,0,Es,43,1,7,1.83,7.28,0.506,5000000
+44,Ru,Rutenio,101,5,8,Hexagonal, Kr  4d7 5s1 ,1844,12370,9,18,17,0,Fm,44,1,8,1.78,7.36,1.17,14000000
+45,Rh,Rodio,102.9,5,9,Cubica centrada en las caras, Kr  4d8 5s1 ,1803,12450,9,18,18,0,Md,45,5,9,1.73,7.46,1.5,23000000
+46,Pd,Paladio,106.4,5,10,Cubica centrada en las caras, Kr  4d10 ,1803,12023,8,18,20,0,No,46,5,10,1.69,8.34,0.718,10000000
+47,Ag,Plata,107.8,5,11,Cubica centrada en las caras, Kr  4d10 5s1 ,Prehistoria,10490,9,18,20,0,Lr,47,5,11,1.65,7.58,4.29,62000000
+48,Cd,Cadmio,112.4,5,12,Hexagonal, Kr  4d10 5s2 ,1817,8650,10,18,20,0,Sc,48,1,12,1.61,8.99,0.968,14000000
+49,In,Indio,114.8,5,13,Tetragonal centrada en el cuerpo, Kr  4d10 5s2 5p1 ,1863,7310,10,19,20,0,Zr,49,7,3,1.56,5.79,0.816,12000000
+50,Sn,Estano,118.7,5,14,Tetragonal centrada en el cuerpo, Kr  4d10 5s2 5p2 ,Prehistoria,7365,10,20,20,0,Hf,50,7,4,1.45,7.34,0.666,9100000
+51,Sb,Antimonio,121.7,5,15,Romboedrica, Kr  4d10 5s2 5p3 ,Prehistoria,6697,10,21,20,0,Ti,51,4,5,1.33,8.61,0.243,2500000
+52,Te,Teluro,127.6,5,16,Hexagonal, Kr  4d10 5s2 5p4 ,1782,6240,10,22,20,0,Ta,52,1,6,1.23,9.01,0.0235,10000
+53,I,Yodo,126.9,5,17,Ortorrombica centrada en las bases, Kr  4d10 5s2 5p5 ,1811,4930,10,23,20,0,Nb,53,6,7,1.15,10.45,0.00449,0.0000001
+54,Xe,Xenon,131.2,5,18,Cubica centrada en las caras, Kr  4d10 5s2 5p6 ,1898,5.9,10,24,20,0,V,54,5,8,1.08,12.13,0.0000569,0
+55,Cs,Cesio,132.9,6,1,Cubica centrada en el cuerpo, Xe  6s1,1860,1879,11,24,20,0,Cr,55,2,1,2.98,3.89,0.359,5000000
+56,Ba,Bario,137.3,6,2,Cubica centrada en el cuerpo, Xe  6s2,1808,3620,12,24,20,0,Mo,56,2,2,2.53,5.21,0.184,2900000
+57,La,Lantano,138.9,6,-,Hexagonal, Xe  5d1 6s2,1839,6146,12,24,20,0,W,57,1,3,1.95,5.58,0.135,1600000
+58,Ce,Cerio,140.1,6,-,Cubica centrada en las caras, Xe  4f2 6s2,1803,6689,12,24,20,2,Re,58,5,4,1.85,5.54,0.114,1400000
+59,Pr,Praseodimio,140.9,6,-,Hexagonal, Xe  4f3 6s2,1895,6640,12,24,20,3,Tc,59,1,5,2.47,5.47,0.125,1400000
+60,Nd,Neodimio,144.2,6,-,Hexagonal, Xe  4f4 6s2,1895,6800,12,24,20,4,Os,60,1,6,2.06,5.53,0.165,1600000
+61,Pm,Prometio,146.9,6,-,Hexagonal, Xe  4f5 6s2,1945,7264,12,24,20,5,Ru,61,1,7,2.05,5.58,0.179,1300000
+62,Sm,Samario,150.3,6,-,Romboedrica, Xe  4f6 6s2,1879,7353,12,24,20,6,Ir,62,4,8,2.38,5.64,0.133,1100000
+63,Eu,Europio,151.9,6,-,Cubica centrada en el cuerpo, Xe  4f7 6s2,1901,5244,12,24,20,7,Rh,63,2,9,2.31,5.67,0.139,1100000
+64,Gd,Gadolin,157.2,6,-,Hexagonal, Xe  4f7 6s2,1880,7901,12,24,20,8,Pt,64,1,10,2.33,6.15,0.106,770000
+65,Tb,Terbio,158.9,6,-,Hexagonal, Xe  4f9 6s2,1843,8219,12,24,20,9,Pd,65,1,11,2.25,5.86,0.111,830000
+66,Dy,Disprosio,162.5,6,-,Hexagonal, Xe  4f10 6s2,1886,8551,12,24,20,10,Au,66,1,12,2.28,5.94,0.107,1100000
+67,Ho,Holmio,164.9,6,-,Hexagonal, Xe  4f11 6s2,1878,8800,12,24,20,11,Ag,67,1,13,2.26,6.02,0.162,1100000
+68,Er,Erbio,167.2,6,-,Hexagonal, Xe  4f12 6s2,1842,9066,12,24,20,12,Cu,68,1,14,2.26,6.11,0.143,1200000
+69,Tm,Tulio,168.9,6,-,Hexagonal, Xe  4f13 6s2,1879,9321,12,24,20,13,Ni,69,1,15,2.22,6.18,0.168,1400000
+70,Yb,Iterbio,173,6,-,Cubica centrada en las caras, Xe  4f14 6s2,1878,6965,12,24,20,14,Co,70,5,16,2.22,6.25,0.349,3600000
+71,Lu,Lutecio,174.9,6,3,Hexagonal, Xe  4f14 5d1 6s2,1907,9841,12,24,21,14,Fe,71,1,3,2.17,5.43,0.164,1800000
+72,Hf,Hafnio,178.4,6,4,Hexagonal, Xe  4f14 5d2 6s2,1923,13310,12,24,22,14,Mn,72,1,4,2.08,6.83,0.23,3300000
+73,Ta,Tantalio,180.9,6,5,Cubica centrada en el cuerpo, Xe  4f14 5d3 6s2,1802,16650,12,24,23,14,Mg,73,2,5,2,7.55,0.575,7700000
+74,W,Wolframio,183.8,6,6,Cubica centrada en el cuerpo, Xe  4f14 5d4 6s2,1783,19600,12,24,24,14,Zn,74,2,6,1.93,7.86,1.74,20000000
+75,Re,Renio,186.2,6,7,Hexagonal, Xe  4f14 5d5 6s2,1925,21020,12,24,25,14,Cd,75,1,7,1.88,7.83,0.479,5600000
+76,Os,Osmio,190.2,6,8,Hexagonal, Xe  4f14 5d6 6s2,1803,22610,12,24,26,14,Hg,76,1,8,1.85,8.44,0.876,12000000
+77,Ir,Iridio,192.2,6,9,Cubica centrada en las caras, Xe  4f14 5d7 6s2,1803,22560,12,24,27,14,Be,77,5,9,1.8,8.97,1.47,21000000
+78,Pt,Platino,195,6,10,Cubica centrada en las caras, Xe  4f14 5d9 6s1,1735,21450,11,24,29,14,Al,78,5,10,1.77,8.96,0.716,9400000
+79,Au,Oro,196.9,6,11,Cubica centrada en las caras, Xe  4f14 5d10 6s1,Prehistoria,19300,11,24,30,14,Ga,79,5,11,1.74,9.23,3.17,45000000
+80,Hg,Mercurio,200.5,6,12,Romboedrica, Xe  4f14 5d10 6s2,Prehistoria,13534,12,24,30,14,In,80,4,12,1.71,10.44,0.0834,1000000
+81,Tl,Talio,204.3,6,13,Hexagonal, Xe  4f14 5d10 6s2 6p1,1861,11850,12,25,30,14,Tl,81,1,3,1.56,6.11,0.461,6700000
+82,Pb,Plomo,207.2,6,14,Cubica centrada en las caras, Xe  4f14 5d10 6s2 6p2,Prehistoria,11340,12,26,30,14,Pb,82,5,4,1.54,7.42,0.353,4800000
+83,Bi,Bismuto,208.9,6,15,Romboedrica, Xe  4f14 5d10 6s2 6p3,1753,9780,12,27,30,14,Sn,83,4,5,1.43,7.29,0.0787,770000
+84,Po,Polonio,208.9,6,16,Cubica simple, Xe  4f14 5d10 6s2 6p4,1898,9196,12,28,30,14,Ge,84,8,6,1.35,8.42,0.2,2300000
+85,At,Astato,209.9,6,17,Estructura desconocida, Xe  4f14 5d10 6s2 6p5,1940,-,12,29,30,14,Si,85,0,7,1.27,9.3,0.017,0
+86,Rn,Radon,222,6,18,Cubica centrada en las caras, Xe  4f14 5d10 6s2 6p6,1900,9.73,12,30,30,14,B,86,5,8,1.2,10.75,0.0000364,0
+87,Fr,Francio,223,7,1,Estructura desconocida, Rn  7s1 ,1939,1870,13,30,30,14,C,87,0,1,,4.07,0.15,0
+88,Ra,Radio,226,7,2,Cubica centrada en el cuerpo, Rn  7s2 ,1898,5500,14,30,30,14,N,88,2,2,,5.28,0.186,1000000
+89,Ac,Actinio,227,7,-,Cubica centrada en las caras, Rn  6d1 7s2 ,1899,10070,14,30,31,14,P,89,5,3,1.95,5.17,0.12,0
+90,Th,Torio,232,7,-,Cubica centrada en las caras, Rn  6d2 7s2 ,1829,11724,14,30,32,14,As,90,5,4,1.8,6.31,0.54,6700000
+91,Pa,Protactinio,231,7,-,Tetragonal centrada en el cuerpo, Rn  5f2 6d1 7s2 ,1917,15370,14,30,31,16,Sb,91,7,5,1.8,5.89,0.47,5600000
+92,U,Uranio,238,7,-,Ortorrombica centrada en las bases, Rn  5f3 6d1 7s2 ,1789,19050,14,30,31,17,Bi,92,6,6,1.75,6.19,0.276,3600000
+93,Np,Neptunio,237,7,-,Monoclinica simple, Rn  5f4 6d1 7s2 ,1940,20250,14,30,31,18,Po,93,9,7,1.75,6.27,0.063,830000
+94,Pu,Plutonio,244,7,-,Monoclinica simple, Rn  5f6 7s2 ,1940,19816,14,30,30,20,Te,94,9,8,1.75,6.03,0.0674,670000
+95,Am,Americio,243,7,-,Hexagonal, Rn  5f7 7s2 ,1944,13670,14,30,30,21,Se,95,1,9,1.75,5.97,0.1,0
+96,Cm,Curio,247,7,-,Hexagonal, Rn  5f7 6d1 7s2 ,1944,13510,14,30,31,21,S,96,1,10,,5.99,0.1,0
+97,Bk,Berkelio,247,7,-,Hexagonal, Rn  5f9 7s2 ,1949,-,14,30,30,23,O,97,1,11,,6.2,0.1,0
+98,Cf,Californio,251,7,-,Hexagonal, Rn  5f10 7s2 ,1950,15100,14,30,30,24,At,98,1,12,,6.28,0.1,0
+99,Es,Einstenio,252,7,-,Hexagonal, Rn  5f11 7s2 ,1952,8.84,14,30,30,25,I,99,1,13,,6.42,0.1,0
+100,Fm,Fermio,257,7,-,Estructura desconocida, Rn  5f12 7s2 ,1952,-,14,30,30,26,Br,100,0,14,,6.5,0.1,-
+101,Md,Mendelevio,258,7,-,Estructura desconocida, Rn  5f13 7s2 ,1955,-,14,30,30,27,Cl,101,0,15,,6.58,0.1,-
+102,No,Nobelio,259.1,7,-,Estructura desconocida, Rn  5f14 7s2 ,1958,-,14,30,30,28,F,102,0,16,,6.65,0.1,-
+103,Lr,Laurencio,260.1,7,3,Estructura desconocida, Rn  5f14 6d1 7s2,1961,-,14,30,31,28,H,103,0,3,,4.9,0.1,-
+104,Rf,Rutherfordio,261.1,7,4,Estructura desconocida, Rn  5f14 6d2 7s2,1964-1969,-,14,30,32,28,,,0,4,,0,0.23,-
+105,Db,Dubnio,262.1,7,5,Estructura desconocida, Rn  5f14 6d3 7s2,1967-1970,-,14,30,33,28,,,0,5,,0,0.58,-
+106,Sg,Seaborgio,263.1,7,6,Estructura desconocida, Rn  5f14 6d4 7s2,1974,-,14,30,34,28,,,0,6,,0,,-
+107,Bh,Bohrio,262.1,7,7,Estructura desconocida, Rn  5f14 6d5 7s2,1976,-,14,30,35,28,,,0,7,,0,,-
+108,Hs,Hassio,265,7,8,Estructura desconocida, Rn  5f14 6d6 7s2,1984,-,14,30,36,28,,,0,8,,0,,-
+109,Mt,Meitnerio,266,7,9,Estructura desconocida, Rn  5f14 6d7 7s2,1982,-,14,30,37,28,,,0,9,,0,,-
+110,Ds,Darmstadtio,269,7,10,Estructura desconocida, Rn  5f14 6d9 7s1,1994,-,13,30,39,28,,,0,10,,,,-
+111,Rg,Roentgenio,272,7,11,Estructura desconocida, Rn  5f14 6d10 7s1,1994,-,13,30,40,28,,,0,11,,,,-
+112,Cn,Copernicio,285,7,12,Estructura desconocida, Rn  5f14 6d10 7s2,1996,-,14,30,40,28,,,0,12,,,,-
+113,Nh,Nihonio,284,7,13,Estructura desconocida, Rn  5f14 6d10 7s2 7p1,2004,16,14,31,40,28,,,0,3,,,,-
+114,Fl,Flerovio,289,7,14,Estructura desconocida, Rn  5f14 6d10 7s2 7p2,1999,14,14,32,40,28,,,0,4,,,,-
+115,Mc,Moscovio,288,7,15,Estructura desconocida, Rn  5f14 6d10 7s2 7p3,2004,-,14,33,40,28,,,0,5,,,,-
+116,Lv,Livermorio,290,7,16,Estructura desconocida, Rn  5f14 6d10 7s2 7p4,2006,-,14,34,40,28,,,0,6,,,,-
+117,Ts,Tenesino,-,7,17,Estructura desconocida, Rn  5f14 6d10 7s2 7p5,2009-2010,-,14,35,40,28,,,0,7,,,,-
+118,Og,Oganeson,294,7,18,Estructura desconocida, Rn  5f14 6d10 7s2 7p6,2006,13.65,14,36,40,28,,,0,8,,,,

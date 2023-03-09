@@ -23,6 +23,7 @@ Created on Tue Aug  2 15:59:20 2022
 """
 import keras
 import numpy as np
+import scipy as sp
 from matplotlib import pyplot as plt
 import pandas as pd
 from sklearn import preprocessing
@@ -45,11 +46,13 @@ from scipy.fftpack import fft, dct
 from sklearn.preprocessing import MinMaxScaler
 from sklearn import manifold
 from sklearn.manifold import TSNE, MDS
+from sklearn.neighbors import KNeighborsRegressor
 # Make numpy values easier to read.
 np.set_printoptions(precision=3, suppress=True)
 import featurefunctions as F
 import tensorflow as tf
 from tensorflow.keras import layers
+import tsfel
 
 class PlotLosses(keras.callbacks.Callback):
     
@@ -119,10 +122,8 @@ formula = pd.read_csv("/work/mroitegui/Superconductors/data/12340_all_pred.csv")
 electrones=pd.read_csv("/work/mroitegui/Superconductors/data/periodic_table_of_elementswithelectronstotal.csv")
 superconductors_list=formula['DOPPED'].tolist()
 #########
-
 #########
 #FEATURES#
-size_dataset = 12376
 EN=F.electrodifference(formula,electrones,superconductors_list)
 Mval=F.mval(formula,electrones,superconductors_list)
 Mtc=F.mtc(formula,electrones,superconductors_list)
@@ -134,12 +135,25 @@ densidads,densidadp,densidadd,densidadf=F.eletronicdensity(formula,electrones,su
 Mend=F.mend(formula,electrones,superconductors_list)
 vecs = F.compute_vecs(formula, electrones,superconductors_list)
 electronegativity_list=F.EN_old(formula, electrones, superconductors_list)
+smix = F.mixing_entropy(superconductors_list)
+Delta = F.delta(electrones, superconductors_list)
 ############
+# outliers_smix = np.argwhere(np.isnan(smix))
+# print(outliers_smix[:,0])
+# outliers = np.asarray(outliers_smix[:,0])
+# formula.drop(outliers,axis=0,inplace=True)
 ####
 # TRAINING MATRIX #
 #####
-features=['1s','2s','2p','3s','3p','3d','4s','4p','4d','4f','5s','5p','5d','5f','6s','6p','6d','6f','7s','7p',
-                       
+size_dataset = np.size(superconductors_list)
+
+features=[
+    '1s','2s','2p',
+           '3s',
+           '3p',
+           '3d',
+           '4s',
+           '4p','4d','4f','5s','5p','5d','5f','6s','6p','6d','6f','7s','7p',
                             'Mend', 
                             'Mass',
                             'EN',
@@ -147,12 +161,22 @@ features=['1s','2s','2p','3s','3p','3d','4s','4p','4d','4f','5s','5p','5d','5f',
                             'Mval',
                             'Mtc',
                             'Mfie',
-                                'Mec'
+                            'Mec',
+                            'Smix',
+                            # 'delta',
+                            
                        # ,electronegativity_list
                         
                         ]
 X = np.concatenate((
-                    vecs[:,[0,4,5,8,9,10,12,13,14,15,16,17,18,19,20,21,22,23,24,25]],                  
+                    vecs[:,[
+                        0,4,5,
+                            8,
+                            9,
+                            10,
+                            12,
+                            13,14,15,16,17,18,19,20,21,22,23,24,25
+                            ]],                  
                     Mend, 
                     Masa,
                     EN,
@@ -160,17 +184,46 @@ X = np.concatenate((
                     Mval,
                     Mtc,
                     Mfie,
-                    Mec                  
+                    Mec,
+                    smix,
+                    # Delta,
                   # ,electronegativity_list
                     ), axis= 1) 
-
-print(np.shape(X))
-####
 y = zhang_labels
-####
-#######
-#NORMALIZATION
-#######
+print(np.shape(X))
+# ------------------- #
+###################################
+# ------- --------------- ------- #
+# ------- REMOVE OUTLIERS ------- #
+# ------- --------------- ------- #
+###################################
+outliers_smix = np.argwhere(np.isnan(smix))
+# print(outliers_smix[:,0])
+outliers = np.asarray(outliers_smix[:,0])
+X = np.delete(X, outliers, 0)
+y = np.delete(y, outliers, 0)
+# ####
+# print(np.shape(X))
+# print(np.shape(y))
+###################################
+# ------- --------------- ------- #
+# ------- FEATURE SELECTION ----- #
+# ------- --------------- ------- #
+###################################
+# Highly correlated features are removed
+X = pd.DataFrame(X)
+corr_features = tsfel.correlated_features(X)
+X.drop(corr_features, axis=1, inplace=True)
+# Remove low variance features
+selector = VarianceThreshold()
+X = selector.fit_transform(X)
+# X = X.to_numpy()
+print(np.shape(X))
+###################################
+# ------- --------------- ------- #
+# ------- NORMALIZATION-- ------- #
+# ------- --------------- ------- #
+###################################
 scaler = MinMaxScaler(feature_range=(0,1))
 # load data
 data1 = X
@@ -189,10 +242,10 @@ yn = scaler.transform(data2)
 ## EXTRACT REAL Y_TEST ##
 #######
 # ####ZHANG#####
-X_test2 = Xn[12340:size_dataset,:]
-y_test2 = yn[12340:size_dataset]
-Xn = Xn[0:12340, :]
-yn = yn[0:12340]
+# X_test2 = Xn[12340:size_dataset,:]
+# y_test2 = yn[12340:size_dataset]
+Xn = Xn[0:size_dataset, :]
+yn = yn[0:size_dataset]
 ###########
 
 X_train, X_test, y_train, y_test = train_test_split(Xn, yn, test_size=0.15, random_state=30, shuffle=True)
@@ -203,14 +256,10 @@ X_train, X_test, y_train, y_test = train_test_split(Xn, yn, test_size=0.15, rand
 
 # ############
 # ##MACHINE LEARNING ##
-# ##############
-# ##########
-# #######################
-# from sklearn.neighbors import KNeighborsRegressor
-######
-#k-NN Regressor
-######
-# regr = KNeighborsRegressor(n_neighbors = 3, 
+# ###########
+# # ----- k-NN Regressor -----#
+# ###########
+# regr = KNeighborsRegressor(n_neighbors = 5, 
 #                             weights='distance', # weights='distance', 
 #                             algorithm= 'auto', 
 #                             p=1
@@ -219,12 +268,29 @@ X_train, X_test, y_train, y_test = train_test_split(Xn, yn, test_size=0.15, rand
 # print(regr.score(X_train, y_train))
 # y_pred = scaler.inverse_transform(y_pred)
 # y_test = scaler.inverse_transform(y_test)
+# # # ################
+# ## Bagging Regressor
+# ################
+# from sklearn.neighbors import KNeighborsRegressor
+# from sklearn.ensemble import BaggingRegressor
 
+# regr = BaggingRegressor(estimator=KNeighborsRegressor(n_neighbors = 3, 
+#                                                             weights='distance', 
+#                                                             algorithm= 'auto', 
+#                                                             p=1,
+#                                                             # n_estimators=5, ## it was 50
+#                                                             # random_state=0
+#                                                             )).fit(X_train, y_train.ravel())
+# y_pred = regr.predict(X_test)
+# y_pred = y_pred.reshape(-1,1)
+# y_pred = scaler.inverse_transform(y_pred)
+# y_test = scaler.inverse_transform(y_test)
+# print(regr.score(X_train,y_train))
 # ################
 # # XGBoost
 # ################
 import xgboost
-regr = xgboost.XGBRegressor(n_estimators=800, # 200
+regr = xgboost.XGBRegressor(n_estimators= 800, # 200
                                 max_depth=16, # 7
                                 eta=0.02, # 0.1 
                                 subsample=1, # 0.7
@@ -235,7 +301,7 @@ y_pred = regr.predict(X_test)
 y_pred = y_pred.reshape(-1,1)
 y_pred = scaler.inverse_transform(y_pred)
 y_test = scaler.inverse_transform(y_test)
-X_train=pd.DataFrame(X_train,columns =features)
+###########################
 
 import sklearn.metrics, math
 print("\n")
@@ -247,26 +313,7 @@ print("R square (R^2):                 %f" % sklearn.metrics.r2_score(y_test,y_p
 MAE=np.absolute(y_test-y_pred)
 MSE= np.square(y_test-y_pred)
 RMSE=np.sqrt(MSE)
-############
-import shap
 
-# explain the model's predictions using SHAP
-# (same syntax works for LightGBM, CatBoost, scikit-learn, transformers, Spark, etc.)
-explainer = shap.Explainer(regr)
-shap_values = explainer(X_train)
-shap_df=pd.DataFrame(shap_values.values, columns=features)
-shap_df=shap_df.abs()
-shap_df_mean=shap_df.mean()
-shap_vecs=shap_df_mean[['1s','2s','2p','3s','3p','3d','4s','4p','4d','4f','5s','5p','5d','5f','6s','6p','6d','6f','7s','7p']].copy()
-shap_df_mean['vec']=shap_df_mean[:20].sum()
-shap_total=shap_df_mean.copy()
-shap_total=shap_total.drop(['1s','2s','2p','3s','3p','3d','4s','4p','4d','4f','5s','5p','5d','5f','6s','6p','6d','6f','7s','7p'])
-
-shap_total.plot(ylabel='Mean Shap values',kind='bar')
-plt.show()
-
-shap_vecs.plot(ylabel='Mean Shap values',kind='bar')
-plt.show()
 # # #################
 #Plot results
 #####################
@@ -281,103 +328,58 @@ ax.set_ylabel('Predicted')
 
 ######Boxplot
 fig, ax = plt.subplots()
-ax.boxplot(MAE, 0, 'gD')
+# ax.boxplot(MAE, 0, 'gD')
+ax.boxplot(MAE)
 ax.set_xlabel('MAE')
 plt.show()
 
-fig, ax = plt.subplots()
-ax.boxplot(MSE)
-ax.set_xlabel('MSE')
+# fig, ax = plt.subplots()
+# ax.boxplot(MSE)
+# ax.set_xlabel('MSE')
+# plt.show()
+# ##################################
+# ------- --------------- ------- #
+# ------- SHAPLEY VALUES- ------- #
+# ------- --------------- ------- #
+# ##################################
+import shap
+# X_train=pd.DataFrame(X_train,columns = features)
+# features.pop([6, 16, 18])
+# features.pop(['4s', '6d', '7s'])
+features.remove('4s')
+features.remove('6d')
+features.remove('7s')
+X_train=pd.DataFrame(X_train,columns = features)
+# explain the model's predictions using SHAP
+# (same syntax works for LightGBM, CatBoost, scikit-learn, transformers, Spark, etc.)
+explainer = shap.Explainer(regr)
+shap_values = explainer(X_train)
+shap_df=pd.DataFrame(shap_values.values, columns=features)
+shap_df=shap_df.abs()
+shap_df_mean=shap_df.mean()
+shap_vecs=shap_df_mean[['1s','2s','2p','3s','3p','3d',
+                        # '4s',
+                        '4p','4d','4f','5s','5p','5d','5f','6s','6p',
+                        # '6d',
+                        '6f',
+                        # '7s',
+                        '7p']].copy()
+shap_df_mean['vec']=shap_df_mean[:20].sum()
+shap_total=shap_df_mean.copy()
+shap_total=shap_total.drop(['1s','2s','2p','3s','3p','3d',
+                            # '4s',
+                            '4p','4d','4f','5s','5p','5d','5f','6s','6p',
+                            # '6d',
+                            '6f',
+                            # '7s',
+                            '7p'])
+
+shap_total.plot(ylabel='Mean Shap values',kind='bar')
 plt.show()
 
-# # # ################
-# ## Bagging Regressor
-# ################
-# from sklearn.neighbors import KNeighborsRegressor
-# from sklearn.ensemble import BaggingRegressor
+shap_vecs.plot(ylabel='Mean Shap values',kind='bar')
+plt.show()
 
-# regr = BaggingRegressor(base_estimator=KNeighborsRegressor(n_neighbors = 3, 
-#                                                             weights='distance', 
-#                                                             algorithm= 'auto', 
-#                                                             p=1),
-#                                                             n_estimators=5, ## it was 50
-#                                                             random_state=0).fit(X_train, y_train.ravel())
-# y_pred = regr.predict(X_test)
-# y_pred = y_pred.reshape(-1,1)
-# y_pred = scaler.inverse_transform(y_pred)
-# y_test = scaler.inverse_transform(y_test)
-# print(regr.score(X_train,y_train))
-# # # ###################
-# # #################
-# # fig, ax = plt.subplots()
-# # ax.scatter(y_test, y_pred, s=0.4, color = 'k', zorder=2)
-# # # ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=4)
-# # ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r-', lw=3  , zorder=1)
-# # ax.set_xlabel('Measured')
-# # ax.set_ylabel('Predicted')
-# # # plt.ylim(-200, 200)
-# # plt.show()
-
-# # pred_train= regressor.predict(X_train)
-# # print(np.sqrt(mean_squared_error(y_train,pred_train)))
-
-# # pred= regressor.predict(X_test)
-# # print(np.sqrt(mean_squared_error(y_test,pred))) 
-# # fig, ax = plt.subplots()
-# # ax.scatter(y_test, y_pred, s=0.4, color="k", zorder=2)
-# # # ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=4)
-# # ax.plot(
-# #     [y_test.min(), y_test.max()], [y_test.min(), y_test.max()], "r-", lw=3, zorder=1
-# # )
-# # ax.set_xlabel("Measured")
-# # ax.set_ylabel("Predicted")
-# # # plt.ylim(-200, 200)
-# # plt.show()
-# # =============================================================================
-# # results = np.ndarray(shape=(886,2))
-# # results[:,0] = test_y
-# # results[:,1] = y_pred
-# # scipy.io.savemat('Hpred.mat',mdict={'Hpredd':results})
-# =============================================================================
-
-
-
-# ###### PREDICTION OF NBSN AND NEW PROTOTYPES #######
-# y_pred2 = regr.predict(X_test2)
-# y_pred2 = y_pred2.reshape(-1,1)
-# y_pred2 = scaler.inverse_transform(y_pred2)
-# y_test2 = scaler.inverse_transform(y_test2)
-# y_pred2 = np.around(y_pred2, decimals=2)
-
-# print('Test')
-# print(y_test2.ravel())
-# print('Pred')
-# print(y_pred2.ravel())
-# fig, ax = plt.subplots()
-# ax.scatter(y_test2, y_pred2, s=5, color = 'k', zorder=2)
-# # ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=4)
-# ax.plot([y_test2.min(), y_test2.max()], [y_test2.min(), y_test2.max()], 'r-', lw=3  , zorder=1)
-# ax.set_xlabel('Measured')
-# ax.set_ylabel('Predicted')
-# # plt.ylim(-200, 200)
-# plt.show()
-# # ### Error distribution ###
-# """
-# Calculate error from between target and predictions
-# (Based on merged data frame of test data and predictions)
-# """
-# atoms = X_test[:,23]
-# atoms = atoms.reshape(-1,1)
-# atoms = scaler.inverse_transform(atoms)
-# y_error = np.abs(y_test - y_pred)
-
-# #Set plot size
-# plt.subplots(figsize=(10,5))
-# #Set X-Axis range
-# # plt.xlim(0, 180)
-# plt.title('Model Error Distribution')
-# plt.ylabel('Abs. Error (Kelvin)')
-# plt.xlabel('Error')
-# plt.scatter(atoms, y_error)
-# plt.show()
-
+###################
+# END OF THE CODE #
+###################

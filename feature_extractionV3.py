@@ -99,8 +99,8 @@ def r_square_loss(y_true, y_pred):
     SS_tot = K.sum(K.square(y_true - K.mean(y_true))) 
     return 1 - ( 1 - SS_res/(SS_tot + K.epsilon()))
 
-stanev_train= pd.read_csv('/work/mroitegui/Superconductors/data/Supercon_data_stanev.csv')
-supercon_train = pd.read_csv("/work/angel/Superconductivity/datasets/archive/unique_m.csv")
+stanev_train= pd.read_csv('data/Supercon_data_stanev.csv')
+supercon_train = pd.read_csv("data/unique_m.csv")
 supercon_train.head()
 
 supercon_features = supercon_train.copy()
@@ -109,14 +109,14 @@ supercon_features.drop('material', inplace=True, axis=1)
 supercon_features = np.array(supercon_features)
 supercon_labels = np.array(supercon_labels)
 
-magpie_train = pd.read_csv("/data/angel/Superconductivity/data/train.csv")
+magpie_train = pd.read_csv("data/train.csv")
 magpie_features = magpie_train.copy()
 magpie_features2 = magpie_features
 magpie_labels = magpie_features.pop('critical_temp')
 magpie_features = np.array(magpie_features)
 magpie_labels = np.array(magpie_labels)
 
-zhang_train = pd.read_csv("/work/mroitegui/Superconductors/data/12340_all_pred.csv")
+zhang_train = pd.read_csv("data/12340_all_pred.csv")
 zhang_features = zhang_train.copy()
 zhang_labels = zhang_features.pop('TC')
 zhang_features.pop('DOPPED')
@@ -132,9 +132,9 @@ stanev_labels = np.array(stanev_labels)
 
 ##########
 # formula = pd.read_csv("/work/mroitegui/Superconductors/data/12340_all_pred.csv")
-formula = pd.read_csv("/work/angel/Superconductivity/datasets/archive/unique_m.csv")
+formula = pd.read_csv("data/unique_m.csv")
 # electrones=pd.read_csv("/work/mroitegui/Superconductors/data/periodic_table_of_elements.csv")
-electrones=pd.read_csv("/work/mroitegui/Superconductors/data/periodic_table_of_elementswithelectronstotal.csv")
+electrones=pd.read_csv("data/periodic_table_of_elementswithelectronstotal.csv")
 # electronegativitycsv =pd.read_csv("/work/mroitegui/Superconductors/data/periodic_table_of_elements.csv")
 superconductors_list=formula['material'].tolist()
 # superconductors_list=formula['DOPPED'].tolist()

@@ -21,7 +21,6 @@ Created on Tue Aug  2 15:59:20 2022
 
 @author: angel
 """
-import keras
 import numpy as np
 import scipy as sp
 from matplotlib import pyplot as plt
@@ -32,17 +31,6 @@ from sklearn.model_selection import train_test_split
 import tsfel
 from sklearn.decomposition import PCA, KernelPCA
 import seaborn as sb
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
-from keras.layers import Embedding
-from keras.layers import Convolution1D, GlobalAveragePooling1D, MaxPooling1D, Activation
-from keras.layers import Convolution2D, Dense, Dropout, Flatten, MaxPooling2D, BatchNormalization
-import re
-from scipy import ndimage, misc
-from scipy.stats import entropy
-from scipy import signal
-from scipy import constants
-from scipy.fftpack import fft, dct
 from sklearn.preprocessing import MinMaxScaler
 from sklearn import manifold
 from sklearn.manifold import TSNE, MDS
@@ -50,39 +38,7 @@ from sklearn.neighbors import KNeighborsRegressor
 # Make numpy values easier to read.
 np.set_printoptions(precision=3, suppress=True)
 import featurefunctions as F
-import tensorflow as tf
-from tensorflow.keras import layers
-import tsfel
 
-class PlotLosses(keras.callbacks.Callback):
-    
-    def on_train_begin(self, logs={}):
-        self.i = 0
-        self.x = []
-        self.losses = []
-        self.val_losses = []
-        
-        self.fig = plt.figure()
-        
-        self.logs = []
-
-    def on_epoch_end(self, epoch, logs={}):
-        
-        self.logs.append(logs)
-        self.x.append(self.i)
-        self.losses.append(logs.get('loss'))
-        self.val_losses.append(logs.get('val_loss'))
-        self.i += 1
-        
-        clear_output(wait=True)
-        plt.plot(self.x, self.losses, label="loss")
-        plt.plot(self.x, self.val_losses, label="val_loss")
-        plt.title('model loss')
-        plt.legend()
-        #plt.savefig('CNNThy-M-LV-Loss.png')
-        plt.show();
-        # root mean squared error (rmse) for regression
-plot_losses = PlotLosses()        
         
 def rmse(y_true, y_pred):
     from keras import backend
@@ -106,9 +62,7 @@ def r_square_loss(y_true, y_pred):
     SS_tot = K.sum(K.square(y_true - K.mean(y_true))) 
     return 1 - ( 1 - SS_res/(SS_tot + K.epsilon()))
 
-
-
-zhang_train = pd.read_csv("/work/mroitegui/Superconductors/data/12340_all_pred.csv")
+zhang_train = pd.read_csv("data/12340_all_pred.csv")
 zhang_features = zhang_train.copy()
 zhang_labels = zhang_features.pop('TC')
 zhang_features.pop('DOPPED')
@@ -116,10 +70,10 @@ zhang_features = np.array(zhang_features)
 zhang_labels = np.array(zhang_labels)
 
 
-folder_path='/work/mroitegui/Superconductivity/shap'
+# folder_path='/work/mroitegui/Superconductivity/shap'
 ##########
-formula = pd.read_csv("/work/mroitegui/Superconductors/data/12340_all_pred.csv")
-electrones=pd.read_csv("/work/mroitegui/Superconductors/data/periodic_table_of_elementswithelectronstotal.csv")
+formula = pd.read_csv("data/12340_all_pred.csv")
+electrones=pd.read_csv("data/periodic_table_of_elementswithelectronstotal.csv")
 superconductors_list=formula['DOPPED'].tolist()
 #########
 #########
@@ -153,7 +107,11 @@ features=[
            '3p',
            '3d',
            '4s',
-           '4p','4d','4f','5s','5p','5d','5f','6s','6p','6d','6f','7s','7p',
+           '4p','4d','4f','5s','5p','5d','5f',
+           '6s',
+           '6p','6d','6f',
+           '7s',
+           '7p',
                             'Mend', 
                             'Mass',
                             'EN',
@@ -163,9 +121,7 @@ features=[
                             'Mfie',
                             'Mec',
                             'Smix',
-                            # 'delta',
-                            
-                       # ,electronegativity_list
+                            'delta',
                         
                         ]
 X = np.concatenate((
@@ -186,8 +142,7 @@ X = np.concatenate((
                     Mfie,
                     Mec,
                     smix,
-                    # Delta,
-                  # ,electronegativity_list
+                    Delta,
                     ), axis= 1) 
 y = zhang_labels
 print(np.shape(X))
@@ -250,22 +205,19 @@ yn = yn[0:size_dataset]
 
 X_train, X_test, y_train, y_test = train_test_split(Xn, yn, test_size=0.15, random_state=30, shuffle=True)
 
-# trainn_x, test_x, trainn_y, test_y = train_test_split(X, Y, test_size=0.2, random_state=30, shuffle=True)
-# train_x, cval_x, train_y, cval_y = train_test_split(trainn_x, trainn_y, test_size=0.25, random_state=30, shuffle=True)
-
-
 # ############
 # ##MACHINE LEARNING ##
 # ###########
 # # ----- k-NN Regressor -----#
 # ###########
-# regr = KNeighborsRegressor(n_neighbors = 5, 
+# regr = KNeighborsRegressor(n_neighbors = 10, 
 #                             weights='distance', # weights='distance', 
 #                             algorithm= 'auto', 
 #                             p=1
-#                             )
-# y_pred = regr.fit(X_train, y_train).predict(X_test)
-# print(regr.score(X_train, y_train))
+#                             ).fit(X_train, y_train)
+
+# y_pred = regr.predict(X_test)
+# y_pred = y_pred.reshape(-1,1)
 # y_pred = scaler.inverse_transform(y_pred)
 # y_test = scaler.inverse_transform(y_test)
 # # # ################
@@ -287,20 +239,30 @@ X_train, X_test, y_train, y_test = train_test_split(Xn, yn, test_size=0.15, rand
 # y_test = scaler.inverse_transform(y_test)
 # print(regr.score(X_train,y_train))
 # ################
-# # XGBoost
+# # Random Forest
 # ################
-import xgboost
-regr = xgboost.XGBRegressor(n_estimators= 800, # 200
-                                max_depth=16, # 7
-                                eta=0.02, # 0.1 
-                                subsample=1, # 0.7
-                                colsample_bytree=0.5, # 0.8
-                                # booster = 'dart'
-                                ).fit(X_train, y_train)
+from sklearn.ensemble import RandomForestRegressor
+regr = RandomForestRegressor()
+regr.fit(X_train, y_train.ravel())
 y_pred = regr.predict(X_test)
 y_pred = y_pred.reshape(-1,1)
 y_pred = scaler.inverse_transform(y_pred)
 y_test = scaler.inverse_transform(y_test)
+# ################
+# # XGBoost
+# ################
+# import xgboost
+# regr = xgboost.XGBRegressor(n_estimators= 10,  #800, 
+#                                 max_depth=16, # 7
+#                                 eta=0.02, # 0.1 
+#                                 subsample=1, # 0.7
+#                                 colsample_bytree=0.5, # 0.8
+#                                 # booster = 'dart'
+#                                 ).fit(X_train, y_train)
+# y_pred = regr.predict(X_test)
+# y_pred = y_pred.reshape(-1,1)
+# y_pred = scaler.inverse_transform(y_pred)
+# y_test = scaler.inverse_transform(y_test)
 ###########################
 
 import sklearn.metrics, math
@@ -343,17 +305,31 @@ plt.show()
 # ------- --------------- ------- #
 # ##################################
 import shap
-# X_train=pd.DataFrame(X_train,columns = features)
-# features.pop([6, 16, 18])
-# features.pop(['4s', '6d', '7s'])
+import time
 features.remove('4s')
 features.remove('6d')
 features.remove('7s')
 X_train=pd.DataFrame(X_train,columns = features)
 # explain the model's predictions using SHAP
 # (same syntax works for LightGBM, CatBoost, scikit-learn, transformers, Spark, etc.)
-explainer = shap.Explainer(regr)
-shap_values = explainer(X_train)
+### knn explainer ###
+# t0 = time.time()
+# X_train_summary = shap.kmeans(X_train, 10)
+# explainerKNN = shap.KernelExplainer(regr.predict, X_train_summary)
+# shap_values = explainerKNN(X_train_summary)
+# t1 = time.time()
+# timeit=t1-t0
+# timeit
+### XGBoost explainer ###
+# explainer = shap.Explainer(regr)
+# shap_values = explainer(X_train)
+############
+### RF explainer ###
+# Create object that can calculate shap values
+explainer = shap.TreeExplainer(regr)
+# Calculate Shap values
+shap_values = explainer.shap_values(X_train)
+#################
 shap_df=pd.DataFrame(shap_values.values, columns=features)
 shap_df=shap_df.abs()
 shap_df_mean=shap_df.mean()

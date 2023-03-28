@@ -12,7 +12,7 @@ import re
 import numpy as np
 import scipy as sp
 
-electronegativitycsv =pd.read_csv("/work/mroitegui/Superconductors/data/periodic_table_of_elements.csv")
+electronegativitycsv =pd.read_csv("data/periodic_table_of_elements.csv")
 noble_gases = {'He': '1s2',
  'Ne':  '1s2  2s2 2p6',
  'Ar': ' 1s2  2s2 2p6 3s2 3p6',
@@ -24,8 +24,8 @@ def electrodifference(formula,electrones,superconductors_list):
 
    
     nonmetal = ['C','N','O','S','P','Se','He','Ne','Ar','Kr','Xe','Rn','F','Cl','Br','I','At','H']
-    electronegativitycsv =pd.read_csv("/work/mroitegui/Superconductors/data/periodic_table_of_elements.csv")
-    electrones=pd.read_csv("/work/mroitegui/Superconductors/data/periodic_table_of_elementswithelectronstotal.csv") 
+    electronegativitycsv =pd.read_csv("data/periodic_table_of_elements.csv")
+    electrones=pd.read_csv("data/periodic_table_of_elementswithelectronstotal.csv") 
     electronegativity_dict = dict(zip(electronegativitycsv['Symbol'],electronegativitycsv['Electronegativity']))
     element=electrones['Elemento'].tolist()
     EN=[]

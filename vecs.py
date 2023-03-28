@@ -18,8 +18,8 @@ noble_gases = {'He': '1s2',
 'Xe' :'1s2  2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6',
 'Rn' :'1s2  2s2 2p6 3s2 3p6 3d10 4s2 4p6 4d10 5s2 5p6 4f14 5d10 6s2 6p6'}
 
-formula=pd.read_csv("/work/mroitegui/Superconductors/data/unique_m.csv")
-electrones=pd.read_csv("/work/mroitegui/Superconductors/data/periodic_table_of_elementswithelectronstotal.csv") 
+formula=pd.read_csv("data/unique_m.csv")
+electrones=pd.read_csv("data/periodic_table_of_elementswithelectronstotal.csv") 
 
 def compute_vecs(formula, electrones, noble_gases):
     superconductors_list=formula['material'].tolist()

@@ -238,31 +238,31 @@ X_train, X_test, y_train, y_test = train_test_split(Xn, yn, test_size=0.15, rand
 # y_pred = scaler.inverse_transform(y_pred)
 # y_test = scaler.inverse_transform(y_test)
 # print(regr.score(X_train,y_train))
-# ################
-# # Random Forest
-# ################
-from sklearn.ensemble import RandomForestRegressor
-regr = RandomForestRegressor()
-regr.fit(X_train, y_train.ravel())
-y_pred = regr.predict(X_test)
-y_pred = y_pred.reshape(-1,1)
-y_pred = scaler.inverse_transform(y_pred)
-y_test = scaler.inverse_transform(y_test)
-# ################
-# # XGBoost
-# ################
-# import xgboost
-# regr = xgboost.XGBRegressor(n_estimators= 10,  #800, 
-#                                 max_depth=16, # 7
-#                                 eta=0.02, # 0.1 
-#                                 subsample=1, # 0.7
-#                                 colsample_bytree=0.5, # 0.8
-#                                 # booster = 'dart'
-#                                 ).fit(X_train, y_train)
+# # ################
+# # # Random Forest
+# # ################
+# from sklearn.ensemble import RandomForestRegressor
+# regr = RandomForestRegressor()
+# regr.fit(X_train, y_train.ravel())
 # y_pred = regr.predict(X_test)
 # y_pred = y_pred.reshape(-1,1)
 # y_pred = scaler.inverse_transform(y_pred)
 # y_test = scaler.inverse_transform(y_test)
+################
+# XGBoost
+################
+import xgboost
+regr = xgboost.XGBRegressor(n_estimators= 1000,  #800, 
+                                max_depth=16, # 7
+                                eta=0.02, # 0.1 
+                                subsample=1, # 0.7
+                                colsample_bytree=0.5, # 0.8
+                                # booster = 'dart'
+                                ).fit(X_train, y_train)
+y_pred = regr.predict(X_test)
+y_pred = y_pred.reshape(-1,1)
+y_pred = scaler.inverse_transform(y_pred)
+y_test = scaler.inverse_transform(y_test)
 ###########################
 
 import sklearn.metrics, math
@@ -323,38 +323,38 @@ X_train=pd.DataFrame(X_train,columns = features)
 ### XGBoost explainer ###
 # explainer = shap.Explainer(regr)
 # shap_values = explainer(X_train)
-############
-### RF explainer ###
-# Create object that can calculate shap values
-explainer = shap.TreeExplainer(regr)
-# Calculate Shap values
-shap_values = explainer.shap_values(X_train)
-#################
-shap_df=pd.DataFrame(shap_values.values, columns=features)
-shap_df=shap_df.abs()
-shap_df_mean=shap_df.mean()
-shap_vecs=shap_df_mean[['1s','2s','2p','3s','3p','3d',
-                        # '4s',
-                        '4p','4d','4f','5s','5p','5d','5f','6s','6p',
-                        # '6d',
-                        '6f',
-                        # '7s',
-                        '7p']].copy()
-shap_df_mean['vec']=shap_df_mean[:20].sum()
-shap_total=shap_df_mean.copy()
-shap_total=shap_total.drop(['1s','2s','2p','3s','3p','3d',
-                            # '4s',
-                            '4p','4d','4f','5s','5p','5d','5f','6s','6p',
-                            # '6d',
-                            '6f',
-                            # '7s',
-                            '7p'])
+# ############
+# ### RF explainer ###
+# # Create object that can calculate shap values
+# explainer = shap.TreeExplainer(regr)
+# # Calculate Shap values
+# shap_values = explainer.shap_values(X_train)
+# #################
+# shap_df=pd.DataFrame(shap_values.values, columns=features)
+# shap_df=shap_df.abs()
+# shap_df_mean=shap_df.mean()
+# shap_vecs=shap_df_mean[['1s','2s','2p','3s','3p','3d',
+#                         # '4s',
+#                         '4p','4d','4f','5s','5p','5d','5f','6s','6p',
+#                         # '6d',
+#                         '6f',
+#                         # '7s',
+#                         '7p']].copy()
+# shap_df_mean['vec']=shap_df_mean[:20].sum()
+# shap_total=shap_df_mean.copy()
+# shap_total=shap_total.drop(['1s','2s','2p','3s','3p','3d',
+#                             # '4s',
+#                             '4p','4d','4f','5s','5p','5d','5f','6s','6p',
+#                             # '6d',
+#                             '6f',
+#                             # '7s',
+#                             '7p'])
 
-shap_total.plot(ylabel='Mean Shap values',kind='bar')
-plt.show()
+# shap_total.plot(ylabel='Mean Shap values',kind='bar')
+# plt.show()
 
-shap_vecs.plot(ylabel='Mean Shap values',kind='bar')
-plt.show()
+# shap_vecs.plot(ylabel='Mean Shap values',kind='bar')
+# plt.show()
 
 ###################
 # END OF THE CODE #

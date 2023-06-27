@@ -594,101 +594,113 @@ X_train, X_test, y_train, y_test = train_test_split(Xn, yn, test_size=0.15, rand
 # CLUSTERING ###
 ################
 data = Xn
-################
-## Kernel PCA 2D##
-################
-##  kernel{‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘cosine’, ‘precomputed’}, default=’linear’
-kernell = "linear"
-s = 0.05
-color = 'b'
-transformer = KernelPCA(n_components=2, 
-                        kernel=kernell,
-                        gamma=None) 
-                        #, fit_inverse_transform=True, alpha=0.1)
-# X_transformed = transformer.fit_transform(X_train)
-X_transformed = transformer.fit_transform(data)
-print(X_transformed.shape)
+# ################
+# ## Kernel PCA 2D##
+# ################
+# ##  kernel{‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘cosine’, ‘precomputed’}, default=’linear’
+# kernell = "linear"
+# s = 0.05
+# color = 'b'
+# transformer = KernelPCA(n_components=2, 
+#                         kernel=kernell,
+#                         gamma=None) 
+#                         #, fit_inverse_transform=True, alpha=0.1)
+# # X_transformed = transformer.fit_transform(X_train)
+# X_transformed = transformer.fit_transform(data)
+# print(X_transformed.shape)
 
-###############
-## plot results
-###############
-fig, ax = plt.subplots()
-ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
-ax.set_ylabel("PCA Feature #1")
-ax.set_xlabel("PCA Feature #0")
-ax.set_title("Training data")
-plt.show()
-################
-## Kernel PCA 3D##
-################
-transformer = KernelPCA(n_components=3, 
-                        kernel=kernell,
-                        gamma=None) 
-                        #, fit_inverse_transform=True, alpha=0.1)
-X_transformed = transformer.fit_transform(data)
-print(X_transformed.shape)
-###############
-## plot results
-###############
-fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
-ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
-###################
-# TSNE 2D ############
-###################
-tsne = TSNE(n_components=2, verbose=1, random_state=10)
-z = tsne.fit_transform(data) 
-X_transformed = z
-###############
-## plot results
-###############
-fig, ax = plt.subplots()
-ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
-ax.set_ylabel("TSNE Feature #1")
-ax.set_xlabel("TSNE Feature #0")
-ax.set_title("Training data")
-plt.show()
-###
-###################
-# TSNE 3D ############
-###################
-tsne = TSNE(n_components=3, verbose=1, random_state=10)
-z = tsne.fit_transform(data) 
-X_transformed = z
-###############
-## plot results
-###############
-fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
-ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
-###################
+# ###############
+# ## plot results
+# ###############
+# fig, ax = plt.subplots()
+# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
+# ax.set_ylabel("PCA Feature #1")
+# ax.set_xlabel("PCA Feature #0")
+# ax.set_title("Training data")
+# plt.show()
+# ################
+# ## Kernel PCA 3D##
+# ################
+# transformer = KernelPCA(n_components=3, 
+#                         kernel=kernell,
+#                         gamma=None) 
+#                         #, fit_inverse_transform=True, alpha=0.1)
+# X_transformed = transformer.fit_transform(data)
+# print(X_transformed.shape)
+# ###############
+# ## plot results
+# ###############
+# fig = plt.figure()
+# ax = fig.add_subplot(projection='3d')
+# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
+# ###################
+# # TSNE 2D ############
+# ###################
+# tsne = TSNE(n_components=2, verbose=1, random_state=10)
+# z = tsne.fit_transform(data) 
+# X_transformed = z
+# ###############
+# ## plot results
+# ###############
+# fig, ax = plt.subplots()
+# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
+# ax.set_ylabel("TSNE Feature #1")
+# ax.set_xlabel("TSNE Feature #0")
+# ax.set_title("Training data")
+# plt.show()
+# ###
+# ###################
+# # TSNE 3D ############
+# ###################
+# tsne = TSNE(n_components=3, verbose=1, random_state=10)
+# z = tsne.fit_transform(data) 
+# X_transformed = z
+# ###############
+# ## plot results
+# ###############
+# fig = plt.figure()
+# ax = fig.add_subplot(projection='3d')
+# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
+# ###################
 # MSD 2D ############
 ###################
-embedding = MDS(n_components=2, normalized_stress='auto')
-X_transformed = embedding.fit_transform(data)
-###############
-## plot results
-###############
-fig, ax = plt.subplots()
-ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
-ax.set_ylabel("TSNE Feature #1")
-ax.set_xlabel("TSNE Feature #0")
-ax.set_title("Training data")
-plt.show()
-###
-###################
-# MSD 3D ############
-###################
-embedding = MDS(n_components=3, 
-                # normalized_stress='auto'
+embedding = MDS(n_components=2, 
+                max_iter=50,
+                # n_init=4,
+                random_state=0,
+                normalized_stress=True,
                 )
 X_transformed = embedding.fit_transform(data)
 ###############
 ## plot results
 ###############
-fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
-ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
+s = 0.05
+color = 'b'
+fig, ax = plt.subplots()
+ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
+ax.set_ylabel("TSNE Feature #1")
+ax.set_xlabel("TSNE Feature #0")
+ax.set_title("Training data")
+plt.show()
+###
+# ###################
+# # MSD 3D ############
+# ###################
+# embedding = MDS(n_components=3, 
+#                 max_iter=50,
+#                 n_init=4,
+#                 random_state=0,
+#                 normalized_stress=False,
+#                 )
+# X_transformed = embedding.fit_transform(data)
+# ###############
+# ## plot results
+# ###############
+# s = 0.05
+# color = 'b'
+# fig = plt.figure()
+# ax = fig.add_subplot(projection='3d')
+# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
 ###########################
 # df = pd.DataFrame()
 # df["y"] = y

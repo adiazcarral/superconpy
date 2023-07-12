@@ -102,47 +102,49 @@ Delta = F.delta(electrones, superconductors_list)
 size_dataset = np.size(superconductors_list)
 
 features=[
-    '1s','2s','2p',
+    # '1s','2s','2p',
            '3s',
-           '3p',
-           '3d',
-           '4s',
-           '4p','4d','4f','5s','5p','5d','5f',
-           '6s',
-           '6p','6d','6f',
-           '7s',
-           '7p',
+           # '3p',
+            '3d',
+           # '4s',
+           # '4p','4d','4f','5s','5p','5d','5f',
+            '6s',
+           # '6p','6d','6f',
+           # '7s',
+           # '7p',
                             'Mend', 
-                            'Mass',
-                            'EN',
-                            'Maradius',
-                            'Mval',
-                            'Mtc',
+                            # 'Mass',
+                            # 'EN',
+                            # 'Maradius',
+                            # 'Mval',
+                            # 'Mtc',
                             'Mfie',
                             'Mec',
                             'Smix',
-                            'delta',
+                            # 'delta',
                         
                         ]
 X = np.concatenate((
                     vecs[:,[
-                        0,4,5,
+                        # 0,4,5,
                             8,
-                            9,
+                            # 9,
                             10,
-                            12,
-                            13,14,15,16,17,18,19,20,21,22,23,24,25
+                            # 12,
+                            # 13,14,15,16,17,18,19,
+                            20,
+                            # 21,22,23,24,25
                             ]],                  
                     Mend, 
-                    Masa,
-                    EN,
-                    Maradius,
-                    Mval,
-                    Mtc,
+                    # Masa,
+                    # EN,
+                    # Maradius,
+                    # Mval,
+                    # Mtc,
                     Mfie,
                     Mec,
                     smix,
-                    Delta,
+                    # Delta,
                     ), axis= 1) 
 y = zhang_labels
 print(np.shape(X))
@@ -288,12 +290,12 @@ ax.set_xlabel('Measured')
 ax.set_ylabel('Predicted')
 # plt.ylim(-200, 200)
 
-######Boxplot
-fig, ax = plt.subplots()
-# ax.boxplot(MAE, 0, 'gD')
-ax.boxplot(MAE)
-ax.set_xlabel('MAE')
-plt.show()
+# ######Boxplot
+# fig, ax = plt.subplots()
+# # ax.boxplot(MAE, 0, 'gD')
+# ax.boxplot(MAE)
+# ax.set_xlabel('MAE')
+# plt.show()
 
 # fig, ax = plt.subplots()
 # ax.boxplot(MSE)

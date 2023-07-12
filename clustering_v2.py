@@ -191,104 +191,104 @@ data = Xn
 # ax1 = fig.add_subplot(projection='3d')
 # ax1.scatter(Xn[:, 0], Xn[:, 1], Xn[:, 2], s=0.05, color = 'b', zorder=2)
 # plt.show()
-# plt.scatter(Xn[:, 0], Xn[:, 1],s=0.5, color = 'g', zorder=2)
-# plt.show()
-# plt.scatter(Xn[:, 0], Xn[:, 2],s=0.05, color = 'b', zorder=2)
-# plt.show()
-# plt.scatter(Xn[:, 2], Xn[:, 1],s=0.05, color = 'b', zorder=2)
-# plt.show()
-################
-## Kernel PCA 2D##
-################
-##  kernel{‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘cosine’, ‘precomputed’}, default=’linear’
-kernell = "sigmoid"
-s = 0.05
-color = 'b'
-transformer = KernelPCA(n_components=2, 
-                        kernel=kernell,
-                        gamma=None) 
-                        #, fit_inverse_transform=True, alpha=0.1)
-# X_transformed = transformer.fit_transform(X_train)
-X_transformed = transformer.fit_transform(data)
-print(X_transformed.shape)
-
-###############
-## plot results
-###############
-fig, ax = plt.subplots()
-ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
-ax.set_ylabel("PCA Feature #1")
-ax.set_xlabel("PCA Feature #0")
-ax.set_title("Training data")
+plt.scatter(Xn[:, 0], Xn[:, 1],s=0.5, color = 'g', zorder=2)
+plt.show()
+plt.scatter(Xn[:, 0], Xn[:, 2],s=0.05, color = 'b', zorder=2)
+plt.show()
+plt.scatter(Xn[:, 2], Xn[:, 1],s=0.05, color = 'b', zorder=2)
 plt.show()
 # ################
-# ## Kernel PCA 3D##
+# ## Kernel PCA 2D##
 # ################
-# transformer = KernelPCA(n_components=3, 
+# ##  kernel{‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘cosine’, ‘precomputed’}, default=’linear’
+# kernell = "sigmoid"
+# s = 0.05
+# color = 'b'
+# transformer = KernelPCA(n_components=2, 
 #                         kernel=kernell,
 #                         gamma=None) 
 #                         #, fit_inverse_transform=True, alpha=0.1)
+# # X_transformed = transformer.fit_transform(X_train)
 # X_transformed = transformer.fit_transform(data)
 # print(X_transformed.shape)
+
 # ###############
 # ## plot results
 # ###############
-# fig = plt.figure()
-# ax = fig.add_subplot(projection='3d')
-# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
-###################
-# TSNE 2D ############
-###################
-tsne = TSNE(n_components=2, verbose=1, random_state=10)
-z = tsne.fit_transform(data) 
-X_transformed = z
-###############
-## plot results
-###############
-fig, ax = plt.subplots()
-ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
-ax.set_ylabel("TSNE Feature #1")
-ax.set_xlabel("TSNE Feature #0")
-ax.set_title("Training data")
-plt.show()
-###
+# fig, ax = plt.subplots()
+# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
+# ax.set_ylabel("PCA Feature #1")
+# ax.set_xlabel("PCA Feature #0")
+# ax.set_title("Training data")
+# plt.show()
+# # ################
+# # ## Kernel PCA 3D##
+# # ################
+# # transformer = KernelPCA(n_components=3, 
+# #                         kernel=kernell,
+# #                         gamma=None) 
+# #                         #, fit_inverse_transform=True, alpha=0.1)
+# # X_transformed = transformer.fit_transform(data)
+# # print(X_transformed.shape)
+# # ###############
+# # ## plot results
+# # ###############
+# # fig = plt.figure()
+# # ax = fig.add_subplot(projection='3d')
+# # ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
 # ###################
-# # TSNE 3D ############
+# # TSNE 2D ############
 # ###################
-# tsne = TSNE(n_components=3, verbose=1, random_state=10)
+# tsne = TSNE(n_components=2, verbose=1, random_state=10)
 # z = tsne.fit_transform(data) 
 # X_transformed = z
 # ###############
 # ## plot results
 # ###############
-# fig = plt.figure()
-# ax = fig.add_subplot(projection='3d')
-# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
-###############
-### UMAP -----#
-# ------------#
-clusterable_embedding = umap.UMAP(
-    n_neighbors=30,
-    min_dist=0.0,
-    n_components=2,
-    random_state=42,
-).fit_transform(data)
-X_transformed = clusterable_embedding
-###############
-## plot results
-###############
-fig, ax = plt.subplots()
-ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
-ax.set_ylabel("UMAP Feature #1")
-ax.set_xlabel("UMAP Feature #0")
-ax.set_title("Training data")
-plt.show()
-###########################
-# df = pd.DataFrame()
-# df["y"] = y
-# df["comp-1"] = z[:,0]
-# df["comp-2"] = z[:,1]
+# fig, ax = plt.subplots()
+# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
+# ax.set_ylabel("TSNE Feature #1")
+# ax.set_xlabel("TSNE Feature #0")
+# ax.set_title("Training data")
+# plt.show()
+# ###
+# # ###################
+# # # TSNE 3D ############
+# # ###################
+# # tsne = TSNE(n_components=3, verbose=1, random_state=10)
+# # z = tsne.fit_transform(data) 
+# # X_transformed = z
+# # ###############
+# # ## plot results
+# # ###############
+# # fig = plt.figure()
+# # ax = fig.add_subplot(projection='3d')
+# # ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
+# ###############
+# ### UMAP -----#
+# # ------------#
+# clusterable_embedding = umap.UMAP(
+#     n_neighbors=30,
+#     min_dist=0.0,
+#     n_components=2,
+#     random_state=42,
+# ).fit_transform(data)
+# X_transformed = clusterable_embedding
+# ###############
+# ## plot results
+# ###############
+# fig, ax = plt.subplots()
+# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
+# ax.set_ylabel("UMAP Feature #1")
+# ax.set_xlabel("UMAP Feature #0")
+# ax.set_title("Training data")
+# plt.show()
+# ###########################
+# # df = pd.DataFrame()
+# # df["y"] = y
+# # df["comp-1"] = z[:,0]
+# # df["comp-2"] = z[:,1]
 
-# sns.scatterplot(x="comp-1", y="comp-2", hue=df.y.tolist(),
-#                 palette=sns.color_palette("hls", 3),
-#                 data=df).set(title="Iris data T-SNE projection") 
+# # sns.scatterplot(x="comp-1", y="comp-2", hue=df.y.tolist(),
+# #                 palette=sns.color_palette("hls", 3),
+# #                 data=df).set(title="Iris data T-SNE projection") 

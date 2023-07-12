@@ -110,7 +110,8 @@ def r_square_loss(y_true, y_pred):
 
 
 
-zhang_train = pd.read_csv("/work/mroitegui/Superconductors/data/12340_all_pred.csv")
+# zhang_train = pd.read_csv("/work/mroitegui/Superconductors/data/12340_all_pred.csv")
+zhang_train = pd.read_csv("data/12340_all_pred.csv")
 zhang_features = zhang_train.copy()
 zhang_labels = zhang_features.pop('TC')
 zhang_features.pop('DOPPED')
@@ -120,8 +121,10 @@ zhang_labels = np.array(zhang_labels)
 
 folder_path='/work/mroitegui/Superconductivity/shap'
 ##########
-formula = pd.read_csv("/work/mroitegui/Superconductors/data/12340_all_pred.csv")
-electrones=pd.read_csv("/work/mroitegui/Superconductors/data/periodic_table_of_elementswithelectronstotal.csv")
+# formula = pd.read_csv("/work/mroitegui/Superconductors/data/12340_all_pred.csv")
+# electrones=pd.read_csv("/work/mroitegui/Superconductors/data/periodic_table_of_elementswithelectronstotal.csv")
+formula = pd.read_csv("data/12340_all_pred.csv")
+electrones=pd.read_csv("data/periodic_table_of_elementswithelectronstotal.csv")
 superconductors_list=formula['DOPPED'].tolist()
 #########
 #########

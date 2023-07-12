@@ -94,7 +94,7 @@ features=[
                             # 'Mass',
                             # 'EN',
                             # 'Maradius',
-                            # 'Mval',
+                            'Mval',
                             # 'Mtc',
                             # 'Mfie',
                             # 'Mec',
@@ -115,7 +115,7 @@ X = np.concatenate((
                     # Masa,
                     # EN,
                     # Maradius,
-                    # Mval,
+                    Mval,
                     # Mtc,
                     # Mfie,
                     # Mec,
@@ -191,6 +191,10 @@ data = Xn
 # ax1 = fig.add_subplot(projection='3d')
 # ax1.scatter(Xn[:, 0], Xn[:, 1], Xn[:, 2], s=0.05, color = 'b', zorder=2)
 # plt.show()
+#
+plt.scatter(X[:, 0], y,s=0.1, color = 'g', zorder=2)
+plt.show()
+# 
 plt.scatter(Xn[:, 0], Xn[:, 1],s=0.5, color = 'g', zorder=2)
 plt.show()
 plt.scatter(Xn[:, 0], Xn[:, 2],s=0.05, color = 'b', zorder=2)

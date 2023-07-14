@@ -269,11 +269,15 @@ X_train, X_test, y_train, y_test = train_test_split(Xn, yn, test_size=0.15, rand
 # regr = LinearRegression()
 # regr.fit(X_train, y_train)
 # y_pred = regr.predict(X_test)
-# # ############################
-# # # ----- Random Forest -----#
-# # ############################
+# ############################
+# # ----- Random Forest -----#
+# ############################
 # # Prepares a default instance of the random forest regressor
-# regr = RandomForestRegressor()
+# regr = RandomForestRegressor(
+#     n_estimators=50,
+#     max_depth=20, 
+#     random_state=0
+#     )
 # regr.fit(X_train, y_train.ravel())
 # y_pred = regr.predict(X_test)
 # y_pred = y_pred.reshape(-1,1)
@@ -295,8 +299,9 @@ shap.initjs()
 
 regr = MLPRegressor(solver='lbfgs', 
                     alpha=0.0001, 
-                    hidden_layer_sizes=(100, 50, 50, 10), 
-                    random_state=1, 
+                    hidden_layer_sizes=(100, 50, 50, 10),
+                    # hidden_layer_sizes=(25, 20, 20, 20, 10), 
+                    random_state= 1, 
                     max_iter = 10000
                     )
 regr.fit(X_train, y_train.ravel())
@@ -412,7 +417,8 @@ import shap
 features.remove('4s')
 features.remove('6d')
 features.remove('7s')
-X_train=pd.DataFrame(X_train,columns = features)
+# X_shap=pd.DataFrame(X_train, columns = features)
+X_shap=pd.DataFrame(X_train, columns = features)
 ##############################################
 # # explain the model's predictions using SHAP
 ##############################################
@@ -425,7 +431,7 @@ X_train=pd.DataFrame(X_train,columns = features)
 # # Create object that can calculate shap values
 # explainer = shap.TreeExplainer(regr)
 # # Calculate Shap values
-# shap_values = explainer.shap_values(X_train)
+# shap_values = explainer.shap_values(X_shap)
 # #################################
 # ### liner regressor explainer ###
 ###################################
@@ -436,18 +442,19 @@ X_train=pd.DataFrame(X_train,columns = features)
 # shap_values = ex.shap_values(X_test)
 # shap.force_plot(ex.expected_value, shap_values, X_test)
 ################################
-####################
-### MLP explainer ###
-####################
+###################
+## MLP explainer ###
+###################
 # explain all the predictions in the test set
-X_train_summary = shap.kmeans(X_train, 100)
+X_train_summary = shap.kmeans(Xn, 100)
 explainer = shap.KernelExplainer(regr.predict, X_train_summary)
 # explainer = shap.KernelExplainer(regr.predict, X_train)
-shap_values = explainer.shap_values(X_train)
-shap.summary_plot(shap_values, X_train)
+shap_values = explainer.shap_values(Xn)
+shap.summary_plot(shap_values, Xn)
 ################################
 ################################
-shap_df=pd.DataFrame(shap_values.values, columns=features)
+#shap_df=pd.DataFrame(shap_values.values, columns=features)
+shap_df=pd.DataFrame(shap_values, columns=features)
 shap_df=shap_df.abs()
 shap_df_mean=shap_df.mean()
 shap_vecs=shap_df_mean[['1s','2s','2p','3s','3p','3d',

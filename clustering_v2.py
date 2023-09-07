@@ -46,7 +46,8 @@ zhang_labels = zhang_features.pop('TC')
 zhang_features.pop('DOPPED')
 zhang_features = np.array(zhang_features)
 zhang_labels = np.array(zhang_labels)
-
+cuprates=pd.read_csv('/work/mroitegui/Superconductors/cupratos.csv')
+ironbase=pd.read_csv('/work/mroitegui/Superconductors/ironbase.csv')
 
 # folder_path='/work/mroitegui/Superconductivity/shap'
 ##########
@@ -80,47 +81,47 @@ Delta = F.delta(electrones, superconductors_list)
 size_dataset = np.size(superconductors_list)
 
 features=[
-    # '1s','2s','2p',
+    '1s','2s','2p',
            '3s',
-           # '3p',
-           # '3d',
-           # '4s',
-           # '4p','4d','4f','5s','5p','5d','5f',
-           # '6s',
-           # '6p','6d','6f',
-           # '7s',
-           # '7p',
+            '3p',
+            '3d',
+            '4s',
+            '4p','4d','4f','5s','5p','5d','5f',
+            '6s',
+            '6p','6d','6f',
+            '7s',
+            '7p',
                             'Mend', 
-                            # 'Mass',
-                            # 'EN',
-                            # 'Maradius',
+                            'Mass',
+                            'EN',
+                            'Maradius',
                             'Mval',
-                            # 'Mtc',
-                            # 'Mfie',
-                            # 'Mec',
+                            'Mtc',
+                            'Mfie',
+                            'Mec',
                             'Smix',
-                            # 'delta',
+                            'delta',
                         
                         ]
 X = np.concatenate((
                     vecs[:,[
-                        # 0,4,5,
+                        0,4,5,
                             8,
-                            # 9,
-                            # 10,
-                            # 12,
-                            # 13,14,15,16,17,18,19,20,21,22,23,24,25
+                            9,
+                            10,
+                            12,
+                            13,14,15,16,17,18,19,20,21,22,23,24,25
                             ]],                  
                     Mend, 
-                    # Masa,
-                    # EN,
-                    # Maradius,
+                    Masa,
+                    EN,
+                    Maradius,
                     Mval,
-                    # Mtc,
-                    # Mfie,
-                    # Mec,
+                    Mtc,
+                    Mfie,
+                    Mec,
                     smix,
-                    # Delta,
+                    Delta,
                     ), axis= 1) 
 y = zhang_labels
 print(np.shape(X))
@@ -177,8 +178,8 @@ yn = scaler.transform(data2)
 # ####ZHANG#####
 # X_test2 = Xn[12340:size_dataset,:]
 # y_test2 = yn[12340:size_dataset]
-Xn = Xn[0:size_dataset, :]
-yn = yn[0:size_dataset]
+Xn = Xn[0:12340, :]
+yn = yn[0:12340]
 ######
 ################
 # CLUSTERING ###
@@ -241,14 +242,36 @@ plt.show()
 # # ax = fig.add_subplot(projection='3d')
 # # ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
 # ###################
+
 # # TSNE 2D ############
 # ###################
-# tsne = TSNE(n_components=2, verbose=1, random_state=10)
-# z = tsne.fit_transform(data) 
-# X_transformed = z
-# ###############
-# ## plot results
-# ###############
+tsne = TSNE(n_components=2, verbose=1, random_state=10)
+z = tsne.fit_transform(data) 
+X_transformed = z
+###############
+## plot results
+###############
+df=pd.DataFrame(X_transformed)
+df['c']='O'
+# cuprates_list=[]
+# ironbase_list=[]
+colors={'C':'tab:blue', 'I':'tab:orange', 'O':'tab:green'}
+for i in cuprates['DOPPED']:
+    index=superconductors_list.index(i)
+    df.loc[index,'c']='C'
+    # cuprates_list.append(superconductors_list[i].index())
+for i in ironbase['DOPPED']:
+    index=index=superconductors_list.index(i)
+    df.loc[index,'c']='I'
+fig, ax = plt.subplots()
+ax.scatter(df[0], df[1],
+            s=0.1,
+           c=df['c'].map(colors),
+           zorder=2)
+ax.set_ylabel("TSNE Feature #1")
+ax.set_xlabel("TSNE Feature #0")
+ax.set_title("Training data")
+plt.show()
 # fig, ax = plt.subplots()
 # ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
 # ax.set_ylabel("TSNE Feature #1")
@@ -270,7 +293,7 @@ plt.show()
 # # ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
 # ###############
 # ### UMAP -----#
-# # ------------#
+# ------------#
 # clusterable_embedding = umap.UMAP(
 #     n_neighbors=30,
 #     min_dist=0.0,
@@ -278,21 +301,34 @@ plt.show()
 #     random_state=42,
 # ).fit_transform(data)
 # X_transformed = clusterable_embedding
-# ###############
-# ## plot results
-# ###############
+###############
+## plot results
+###############
+
 # fig, ax = plt.subplots()
-# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
+# ax.scatter(df[0], df[1],
+#            # s=s,
+#            c=df['c'].map(colors),
+#            zorder=2)
 # ax.set_ylabel("UMAP Feature #1")
 # ax.set_xlabel("UMAP Feature #0")
 # ax.set_title("Training data")
 # plt.show()
-# ###########################
-# # df = pd.DataFrame()
-# # df["y"] = y
-# # df["comp-1"] = z[:,0]
-# # df["comp-2"] = z[:,1]
 
-# # sns.scatterplot(x="comp-1", y="comp-2", hue=df.y.tolist(),
-# #                 palette=sns.color_palette("hls", 3),
-# #                 data=df).set(title="Iris data T-SNE projection") 
+# fig, ax = plt.subplots()
+# ax.scatter(X_transformed[:, 0], X_transformed[:, 1],
+#            # s=s, color = color,
+#            zorder=2)
+# ax.set_ylabel("UMAP Feature #1")
+# ax.set_xlabel("UMAP Feature #0")
+# ax.set_title("Training data")
+# plt.show()
+###########################
+# df = pd.DataFrame()
+# df["y"] = y
+# df["comp-1"] = z[:,0]
+# df["comp-2"] = z[:,1]
+
+# sns.scatterplot(x="comp-1", y="comp-2", hue=df.y.tolist(),
+#                 palette=sns.color_palette("hls", 3),
+#                 data=df).set(title="Iris data T-SNE projection") 

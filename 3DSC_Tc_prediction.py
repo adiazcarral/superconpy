@@ -40,6 +40,8 @@ import featurefunctions as F
 #####
 import umap.umap_ as umap
 #####
+from sklearn.preprocessing import LabelEncoder
+#####
 zhang_train = pd.read_csv("data/12340_all_pred.csv")
 zhang_features = zhang_train.copy()
 zhang_labels = zhang_features.pop('TC')
@@ -55,10 +57,25 @@ ironbase=pd.read_csv('martin/ironbase.csv')
 lowTcuprate=pd.read_csv('martin/lowT.csv')
 highTcuprate=pd.read_csv('martin/highT.csv')
 # folder_path='/work/mroitegui/Superconductivity/shap'
-##########
-formula = pd.read_csv("data/12340_all_pred.csv")
+###############################################
+# Define the CSV file path for 3DSC
+csv_path = "/data/angel/Superconductivity/3DSC/superconductors_3D/data/final/MP/3DSC_MP.csv"
+##############################################
+# ## Formula for Zhang dataset ##
+# formula = pd.read_csv("data/12340_all_pred.csv")
+# #
+# electrones=pd.read_csv("data/periodic_table_of_elementswithelectronstotal.csv")
+# superconductors_list=formula['DOPPED'].tolist()
+###############################
+## Formula for 3DSC dataset ###
+# Read the CSV file using pandas, skipping the first row for data and using the second row for column names
+df_3DSC = pd.read_csv(csv_path, skiprows=[0]) 
+formula = pd.read_csv(csv_path, skiprows=[0]) 
 electrones=pd.read_csv("data/periodic_table_of_elementswithelectronstotal.csv")
-superconductors_list=formula['DOPPED'].tolist()
+superconductors_list=df_3DSC[('formula_sc')].tolist()
+###############################
+# Convert categorical variable to numerical using LabelEncoder
+label_encoder = LabelEncoder()
 #########
 #########
 #FEATURES#
@@ -76,6 +93,47 @@ electronegativity_list=F.EN_old(formula, electrones, superconductors_list)
 smix = F.mixing_entropy(superconductors_list)
 Delta = F.delta(electrones, superconductors_list)
 ############
+# Extracting lattice vectors, volume, and symmetry group
+lattice_vector_a = df_3DSC[('lata_2')].values
+lattice_vector_a = lattice_vector_a.reshape(-1,1)
+lattice_vector_b = df_3DSC[('latb_2')].values
+lattice_vector_b = lattice_vector_b.reshape(-1,1)
+lattice_vector_c = df_3DSC[('latc_2')].values
+lattice_vector_c = lattice_vector_c.reshape(-1,1)
+density = df_3DSC[('density_2')].values
+density = density.reshape(-1,1)
+crystal_system = label_encoder.fit_transform(df_3DSC[('crystal_system_2')].values)
+crystal_system = crystal_system.reshape(-1,1)
+point_group = label_encoder.fit_transform(df_3DSC[('point_group_2')].values)
+point_group = point_group.reshape(-1,1)
+
+# Convert lattice vectors to a single array
+lattice_vectors = np.column_stack((lattice_vector_a, lattice_vector_b, lattice_vector_c))
+
+# # Print or use individual numpy arrays
+# print("Lattice Vector A:")
+# print(lattice_vector_a)
+
+# print("Lattice Vector B:")
+# print(lattice_vector_b)
+
+# print("Lattice Vector C:")
+# print(lattice_vector_c)
+
+# print("Volume:")
+# print(density)
+
+# print("Symmetry Group:")
+# print(crystal_system)
+
+# # Combine the extracted information into a numpy array
+# superconductor_data = np.column_stack((lattice_vectors, density, crystal_system))
+
+# # Print or use the 'superconductor_data' array as needed
+# print("Combined Superconductor Data:")
+# print(superconductor_data)
+##########################################
+#########################################
 # outliers_smix = np.argwhere(np.isnan(smix))
 # print(outliers_smix[:,0])
 # outliers = np.asarray(outliers_smix[:,0])
@@ -127,9 +185,22 @@ X = np.concatenate((
                     Mec,
                     smix,
                     Delta,
+                    lattice_vector_a,
+                    lattice_vector_b,
+                    lattice_vector_c,
+                    density,
+                    crystal_system,
+                    point_group,
                     ), axis= 1) 
-y = zhang_labels
-print(np.shape(X))
+### Labels Zhang ##
+# y = zhang_labels
+# print(np.shape(X))
+### ------------ ##
+#
+## Labels 3DSC ##
+y = df_3DSC[('tc')].values
+yp = df_3DSC[('tc')].values
+## ----------- ##
 ###
 Xp = np.concatenate((
                     vecs[:,[
@@ -150,6 +221,11 @@ Xp = np.concatenate((
                     Mec,
                     smix,
                     Delta,
+                    lattice_vector_a,
+                    lattice_vector_b,
+                    lattice_vector_c,
+                    density,
+                    # crystal_system,
                     y.reshape(-1,1)
                     ), axis= 1) 
 ###
@@ -209,167 +285,48 @@ yn = scaler.transform(data2)
 Xn = Xn[0:12340, :]
 yn = yn[0:12340]
 ######
+## EXTRACT REAL Y_TEST ##
+#######
+# ####ZHANG#####
+# X_test2 = Xn[12340:size_dataset,:]
+# y_test2 = yn[12340:size_dataset]
+Xn = Xn[0:size_dataset, :]
+yn = yn[0:size_dataset]
+###########
+
+X_train, X_test, y_train, y_test = train_test_split(Xn, yn, test_size=0.15, random_state=30, shuffle=True)
+
 ################
-# CLUSTERING ###
+# XGBoost
 ################
-data = Xn
-###############
-## plot results
-###############
-# fig = plt.figure()
-# ax1 = fig.add_subplot(projection='3d')
-# ax1.scatter(Xn[:, 0], Xn[:, 1], Xn[:, 2], s=0.05, color = 'b', zorder=2)
-# plt.show()
-#
-# plt.scatter(X[:, 0], y,s=0.1, color = 'g', zorder=2)
-# plt.show()
-# # 
-# plt.scatter(Xn[:, 0], Xn[:, 1],s=0.5, color = 'g', zorder=2)
-# plt.show()
-# plt.scatter(Xn[:, 0], Xn[:, 2],s=0.05, color = 'b', zorder=2)
-# plt.show()
-# plt.scatter(Xn[:, 2], Xn[:, 1],s=0.05, color = 'b', zorder=2)
-# plt.show()
-# ################
-# ## Kernel PCA 2D##
-# ################
-# ##  kernel{‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘cosine’, ‘precomputed’}, default=’linear’
-# kernell = "sigmoid"
-# s = 0.05
-# color = 'b'
-# transformer = KernelPCA(n_components=2, 
-#                         kernel=kernell,
-#                         gamma=None) 
-#                         #, fit_inverse_transform=True, alpha=0.1)
-# # X_transformed = transformer.fit_transform(X_train)
-# X_transformed = transformer.fit_transform(data)
-# print(X_transformed.shape)
-
-# ###############
-# ## plot results
-# ###############
-# fig, ax = plt.subplots()
-# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
-# ax.set_ylabel("PCA Feature #1")
-# ax.set_xlabel("PCA Feature #0")
-# ax.set_title("Training data")
-# plt.show()
-# # ################
-# # ## Kernel PCA 3D##
-# # ################
-# # transformer = KernelPCA(n_components=3, 
-# #                         kernel=kernell,
-# #                         gamma=None) 
-# #                         #, fit_inverse_transform=True, alpha=0.1)
-# # X_transformed = transformer.fit_transform(data)
-# # print(X_transformed.shape)
-# # ###############
-# # ## plot results
-# # ###############
-# # fig = plt.figure()
-# # ax = fig.add_subplot(projection='3d')
-# # ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
-# ###################
-
-# # # TSNE 2D ############
-# # ###################
-# tsne = TSNE(n_components=2, verbose=1, random_state=10)
-# z = tsne.fit_transform(data) 
-# X_transformed = z
-# df=pd.DataFrame(X_transformed)
-###############
-## plot results
-###############
-df=pd.DataFrame(Xp[:,(3,30)])
-df['c']='O'
-# cuprates_list=[]
-# ironbase_list=[]
-colors={'HC':'tab:blue','LC':'tab:green' ,'I':'tab:orange', 'O':'tab:grey'}
-for i in highTcuprate['DOPPED']:
-    index=superconductors_list.index(i)
-    df.loc[index,'c']='HC'
-    
-for i in lowTcuprate['DOPPED']:
-    index=superconductors_list.index(i)
-    df.loc[index,'c']='LC'
-    
-for i in ironbase['DOPPED']:
-    index=index=superconductors_list.index(i)
-    df.loc[index,'c']='I'
-fig, ax = plt.subplots()
-ax.scatter(df[0], df[1],
-            s=0.5,
-           c=df['c'].map(colors),
-           zorder=2)
-ax.set_xlabel("$\Delta S_{mix}$", fontsize = 20)
-ax.set_ylabel("$T_c$", fontsize = 14)
-# ax.set_title("Training data")
-plt.show()
-#
-f, ax = plt.subplots()
-points = ax.scatter(smix, vecs[:,8], c=zhang_labels, s=0.1, cmap="plasma")
-# points = ax.scatter(smix, zhang_labels, c=zhang_labels, s=0.1, cmap="plasma")
-f.colorbar(points)
-plt.xlabel("$\Delta S_{mix}$", fontsize = 20)
-plt.ylabel("Mean Valence EC (Mval)", fontsize = 14)
-plt.show()
-# fig, ax = plt.subplots()
-# ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)
-# ax.set_ylabel("TSNE Feature #1")
-# ax.set_xlabel("TSNE Feature #0")
-# ax.set_title("Training data")
-# plt.show()
-# ###
-# # ###################
-# # # TSNE 3D ############
-# # ###################
-# # tsne = TSNE(n_components=3, verbose=1, random_state=10)
-# # z = tsne.fit_transform(data) 
-# # X_transformed = z
-# # ###############
-# # ## plot results
-# # ###############
-# # fig = plt.figure()
-# # ax = fig.add_subplot(projection='3d')
-# # ax.scatter(X_transformed[:, 0], X_transformed[:, 1], X_transformed[:, 2], s=s, color = color, zorder=2)
-# ###############
-# ### UMAP -----#
-# ------------#
-# clusterable_embedding = umap.UMAP(
-#     n_neighbors=30,
-#     min_dist=0.0,
-#     n_components=2,
-#     random_state=42,
-# ).fit_transform(data)
-# X_transformed = clusterable_embedding
-###############
-## plot results
-###############
-
-# fig, ax = plt.subplots()
-# ax.scatter(df[0], df[1],
-#            # s=s,
-#            c=df['c'].map(colors),
-#            zorder=2)
-# ax.set_ylabel("UMAP Feature #1")
-# ax.set_xlabel("UMAP Feature #0")
-# ax.set_title("Training data")
-# plt.show()
-
-# fig, ax = plt.subplots()
-# ax.scatter(X_transformed[:, 0], X_transformed[:, 1],
-#            # s=s, color = color,
-#            zorder=2)
-# ax.set_ylabel("UMAP Feature #1")
-# ax.set_xlabel("UMAP Feature #0")
-# ax.set_title("Training data")
-# plt.show()
+import xgboost
+regr = xgboost.XGBRegressor(n_estimators= 1000,  #800, 
+                                max_depth=16, # 7
+                                eta=0.02, # 0.1 
+                                subsample=1, # 0.7
+                                colsample_bytree=0.5, # 0.8
+                                # booster = 'dart'
+                                ).fit(X_train, y_train)
+y_pred = regr.predict(X_test)
+y_pred = y_pred.reshape(-1,1)
+y_pred = scaler.inverse_transform(y_pred)
+y_test = scaler.inverse_transform(y_test)
 ###########################
-# df = pd.DataFrame()
-# df["y"] = y
-# df["comp-1"] = z[:,0]
-# df["comp-2"] = z[:,1]
 
-# sns.scatterplot(x="comp-1", y="comp-2", hue=df.y.tolist(),
-#                 palette=sns.color_palette("hls", 3),
-#                 data=df).set(title="Iris data T-SNE projection") 
+import sklearn.metrics, math
+print("\n")
+print("Mean absolute error (MAE):      %f" % sklearn.metrics.mean_absolute_error(y_test,y_pred))
+print("Mean squared error (MSE):       %f" % sklearn.metrics.mean_squared_error(y_test,y_pred))
+print("Root mean squared error (RMSE): %f" % math.sqrt(sklearn.metrics.mean_squared_error(y_test,y_pred)))
+print("R square (R^2):                 %f" % sklearn.metrics.r2_score(y_test,y_pred))
+
+MAE=np.absolute(y_test-y_pred)
+MSE= np.square(y_test-y_pred)
+RMSE=np.sqrt(MSE)
+
+fig, ax = plt.subplots()
+ax.scatter(y_test, y_pred, s=0.4, color = 'k', zorder=2)
+# ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=4)
+ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r-', lw=3  , zorder=1)
+ax.set_xlabel('Measured')
+ax.set_ylabel('Predicted')

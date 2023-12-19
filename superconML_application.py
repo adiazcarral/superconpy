@@ -276,7 +276,7 @@ data = Xn
 ###############
 ## plot results
 ###############
-df=pd.DataFrame(Xp[:,(28,30)])
+df=pd.DataFrame(Xp[:,(3,30)])
 df['c']='O'
 # cuprates_list=[]
 # ironbase_list=[]
@@ -303,8 +303,8 @@ ax.set_ylabel("$T_c$", fontsize = 14)
 plt.show()
 #
 f, ax = plt.subplots()
-# points = ax.scatter(smix, vecs[:,8], c=zhang_labels, s=0.1, cmap="plasma")
-points = ax.scatter(smix, zhang_labels, c=zhang_labels, s=0.1, cmap="plasma")
+points = ax.scatter(smix, vecs[:,8], c=zhang_labels, s=0.1, cmap="plasma")
+# points = ax.scatter(smix, zhang_labels, c=zhang_labels, s=0.1, cmap="plasma")
 f.colorbar(points)
 plt.xlabel("$\Delta S_{mix}$", fontsize = 20)
 plt.ylabel("Mean Valence EC (Mval)", fontsize = 14)

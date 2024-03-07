@@ -25,6 +25,10 @@ import numpy as np
 import scipy as sp
 from matplotlib import pyplot as plt
 import pandas as pd
+import keras
+from keras.models import Sequential
+from keras.layers import Dense, Dropout
+from keras.layers import Embedding
 from sklearn import preprocessing
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.model_selection import train_test_split
@@ -35,6 +39,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn import manifold
 from sklearn.manifold import TSNE, MDS
 from sklearn.neighbors import KNeighborsRegressor
+from sklearn.neural_network import MLPRegressor
 # Make numpy values easier to read.
 np.set_printoptions(precision=3, suppress=True)
 import featurefunctions as F
@@ -112,16 +117,16 @@ features=[
             '6p','6d','6f',
             '7s',
             '7p',
-                            # 'Mend', 
-                            # 'Mass',
-                            # 'EN',
-                            # 'Maradius',
-                            # 'Mval',
-                            # 'Mtc',
-                            # 'Mfie',
-                            # 'Mec',
-                            # 'Smix',
-                            # 'delta',
+                            'Mend', 
+                            'Mass',
+                            'EN',
+                            'Maradius',
+                            'Mval',
+                            'Mtc',
+                            'Mfie',
+                            'Mec',
+                            'Smix',
+                            'delta',
                         
                         ]
 X = np.concatenate((
@@ -135,16 +140,16 @@ X = np.concatenate((
                             20,
                             21,22,23,24,25
                             ]],                  
-                    # Mend, 
-                    # Masa,
-                    # EN,
-                    # Maradius,
-                    # Mval,
-                    # Mtc,
-                    # Mfie,
-                    # Mec,
-                    # smix,
-                    # Delta,
+                    Mend, 
+                    Masa,
+                    EN,
+                    Maradius,
+                    Mval,
+                    Mtc,
+                    Mfie,
+                    Mec,
+                    smix,
+                    Delta,
                     ), axis= 1) 
 y = zhang_labels
 print(np.shape(X))
@@ -240,9 +245,59 @@ X_train, X_test, y_train, y_test = train_test_split(Xn, yn, test_size=0.15, rand
 # y_pred = scaler.inverse_transform(y_pred)
 # y_test = scaler.inverse_transform(y_test)
 # print(regr.score(X_train,y_train))
-# # ################
-# # # Random Forest
-# # ################
+#################
+# #################
+# # MLP REGRESSOR #
+# #################
+# # Create an MLP Regressor
+# regr = MLPRegressor(
+#     hidden_layer_sizes=(50,),
+#     activation='relu',
+#     solver='adam',
+#     alpha=0.0001,
+#     learning_rate='constant',
+#     max_iter=3000,
+#     random_state=42,
+#     tol=1e-4,
+#     verbose=False
+# )
+# # Train the model
+# regr.fit(X_train, y_train.ravel())
+# y_pred = regr.predict(X_test)
+# y_pred = y_pred.reshape(-1,1)
+# y_pred = scaler.inverse_transform(y_pred)
+# y_test = scaler.inverse_transform(y_test)
+#################
+################
+# DNN Keras #
+###############
+from keras.regularizers import l2
+actfun = 'relu'
+reg = l2(0.0000001)
+# Training a model
+
+regr = Sequential()
+regr.add(Dense(units=50, activation=actfun, activity_regularizer=reg))
+regr.add(Dense(units=50, activation=actfun, activity_regularizer=reg))
+regr.add(Dense(units=100, activation=actfun, activity_regularizer=reg))
+regr.add(Dense(units=100, activation=actfun, activity_regularizer=reg))
+regr.add(Dense(units=50, activation=actfun, activity_regularizer=reg))
+regr.add(Dense(units=50, activation=actfun, activity_regularizer=reg))
+regr.add(Dense(units=20, activation=actfun, activity_regularizer=reg))
+regr.add(Dense(units=10, activation=actfun, activity_regularizer=reg))
+regr.add(Dense(units=1))
+regr.compile(optimizer='Nadam', loss='mean_squared_error',  metrics=["mean_squared_error", rmse, r_square])
+
+results=regr.fit(X_train,y_train, batch_size=800,epochs=500,shuffle=True, validation_data=(X_test,y_test))
+
+regr.evaluate(X_test, y_test)
+y_pred = regr.predict(X_test)
+y_pred = y_pred.reshape(-1,1)
+y_pred = scaler.inverse_transform(y_pred)
+y_test = scaler.inverse_transform(y_test)
+################
+# Random Forest
+################
 # from sklearn.ensemble import RandomForestRegressor
 # regr = RandomForestRegressor()
 # regr.fit(X_train, y_train.ravel())
@@ -250,21 +305,21 @@ X_train, X_test, y_train, y_test = train_test_split(Xn, yn, test_size=0.15, rand
 # y_pred = y_pred.reshape(-1,1)
 # y_pred = scaler.inverse_transform(y_pred)
 # y_test = scaler.inverse_transform(y_test)
-################
-# XGBoost
-################
-import xgboost
-regr = xgboost.XGBRegressor(n_estimators= 1000,  #800, 
-                                max_depth=16, # 7
-                                eta=0.02, # 0.1 
-                                subsample=1, # 0.7
-                                colsample_bytree=0.5, # 0.8
-                                # booster = 'dart'
-                                ).fit(X_train, y_train)
-y_pred = regr.predict(X_test)
-y_pred = y_pred.reshape(-1,1)
-y_pred = scaler.inverse_transform(y_pred)
-y_test = scaler.inverse_transform(y_test)
+# ################
+# # XGBoost
+# ################
+# import xgboost
+# regr = xgboost.XGBRegressor(n_estimators= 1000,  #800, 
+#                                 max_depth=16, # 7
+#                                 eta=0.02, # 0.1 
+#                                 subsample=1, # 0.7
+#                                 colsample_bytree=0.5, # 0.8
+#                                 # booster = 'dart'
+#                                 ).fit(X_train, y_train)
+# y_pred = regr.predict(X_test)
+# y_pred = y_pred.reshape(-1,1)
+# y_pred = scaler.inverse_transform(y_pred)
+# y_test = scaler.inverse_transform(y_test)
 ###########################
 
 import sklearn.metrics, math

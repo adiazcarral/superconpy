@@ -38,7 +38,7 @@ from sklearn.neighbors import KNeighborsRegressor
 # Make numpy values easier to read.
 np.set_printoptions(precision=3, suppress=True)
 import featurefunctions as F
-
+#
         
 def rmse(y_true, y_pred):
     from keras import backend
@@ -112,16 +112,16 @@ features=[
             '6p','6d','6f',
             '7s',
             '7p',
-                            'Mend', 
-                            'Mass',
-                            'EN',
-                            'Maradius',
-                            'Mval',
-                            'Mtc',
-                            'Mfie',
-                            'Mec',
-                            'Smix',
-                            'delta',
+                            # 'Mend', 
+                            # 'Mass',
+                            # 'EN',
+                            # 'Maradius',
+                            # 'Mval',
+                            # 'Mtc',
+                            # 'Mfie',
+                            # 'Mec',
+                            # 'Smix',
+                            # 'delta',
                         
                         ]
 X = np.concatenate((
@@ -135,16 +135,16 @@ X = np.concatenate((
                             20,
                             21,22,23,24,25
                             ]],                  
-                    Mend, 
-                    Masa,
-                    EN,
-                    Maradius,
-                    Mval,
-                    Mtc,
-                    Mfie,
-                    Mec,
-                    smix,
-                    Delta,
+                    # Mend, 
+                    # Masa,
+                    # EN,
+                    # Maradius,
+                    # Mval,
+                    # Mtc,
+                    # Mfie,
+                    # Mec,
+                    # smix,
+                    # Delta,
                     ), axis= 1) 
 y = zhang_labels
 print(np.shape(X))

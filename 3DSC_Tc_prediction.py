@@ -43,6 +43,7 @@ highTcuprate = pd.read_csv('martin/highT.csv')
 
 # Define the CSV file path for 3DSC
 csv_path = "/data/angel/Superconductivity/3DSC/superconductors_3D/data/final/MP/3DSC_MP.csv"
+# csv_path = "/Users/Angel/data/Superconductivity/3DSC/superconductors_3D/data/final/MP/3DSC_MP.csv"
 
 # Read the CSV file using pandas, skipping the first row for data and using the second row for column names
 df_3DSC = pd.read_csv(csv_path, skiprows=[0])

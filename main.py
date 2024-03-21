@@ -268,33 +268,33 @@ X_train, X_test, y_train, y_test = train_test_split(Xn, yn, test_size=0.15, rand
 # y_pred = scaler.inverse_transform(y_pred)
 # y_test = scaler.inverse_transform(y_test)
 #################
-################
-# DNN Keras #
-###############
-from keras.regularizers import l2
-actfun = 'relu'
-reg = l2(0.0000001)
-# Training a model
+# ################
+# # DNN Keras #
+# ###############
+# from keras.regularizers import l2
+# actfun = 'relu'
+# reg = l2(0.0000001)
+# # Training a model
 
-regr = Sequential()
-regr.add(Dense(units=50, activation=actfun, activity_regularizer=reg))
-regr.add(Dense(units=50, activation=actfun, activity_regularizer=reg))
-regr.add(Dense(units=100, activation=actfun, activity_regularizer=reg))
-regr.add(Dense(units=100, activation=actfun, activity_regularizer=reg))
-regr.add(Dense(units=50, activation=actfun, activity_regularizer=reg))
-regr.add(Dense(units=50, activation=actfun, activity_regularizer=reg))
-regr.add(Dense(units=20, activation=actfun, activity_regularizer=reg))
-regr.add(Dense(units=10, activation=actfun, activity_regularizer=reg))
-regr.add(Dense(units=1))
-regr.compile(optimizer='Nadam', loss='mean_squared_error',  metrics=["mean_squared_error", rmse, r_square])
+# regr = Sequential()
+# regr.add(Dense(units=50, activation=actfun, activity_regularizer=reg))
+# regr.add(Dense(units=50, activation=actfun, activity_regularizer=reg))
+# regr.add(Dense(units=100, activation=actfun, activity_regularizer=reg))
+# regr.add(Dense(units=100, activation=actfun, activity_regularizer=reg))
+# regr.add(Dense(units=50, activation=actfun, activity_regularizer=reg))
+# regr.add(Dense(units=50, activation=actfun, activity_regularizer=reg))
+# regr.add(Dense(units=20, activation=actfun, activity_regularizer=reg))
+# regr.add(Dense(units=10, activation=actfun, activity_regularizer=reg))
+# regr.add(Dense(units=1))
+# regr.compile(optimizer='Nadam', loss='mean_squared_error',  metrics=["mean_squared_error", rmse, r_square])
 
-results=regr.fit(X_train,y_train, batch_size=800,epochs=500,shuffle=True, validation_data=(X_test,y_test))
+# results=regr.fit(X_train,y_train, batch_size=800,epochs=500,shuffle=True, validation_data=(X_test,y_test))
 
-regr.evaluate(X_test, y_test)
-y_pred = regr.predict(X_test)
-y_pred = y_pred.reshape(-1,1)
-y_pred = scaler.inverse_transform(y_pred)
-y_test = scaler.inverse_transform(y_test)
+# regr.evaluate(X_test, y_test)
+# y_pred = regr.predict(X_test)
+# y_pred = y_pred.reshape(-1,1)
+# y_pred = scaler.inverse_transform(y_pred)
+# y_test = scaler.inverse_transform(y_test)
 ################
 # Random Forest
 ################
@@ -305,21 +305,21 @@ y_test = scaler.inverse_transform(y_test)
 # y_pred = y_pred.reshape(-1,1)
 # y_pred = scaler.inverse_transform(y_pred)
 # y_test = scaler.inverse_transform(y_test)
-# ################
-# # XGBoost
-# ################
-# import xgboost
-# regr = xgboost.XGBRegressor(n_estimators= 1000,  #800, 
-#                                 max_depth=16, # 7
-#                                 eta=0.02, # 0.1 
-#                                 subsample=1, # 0.7
-#                                 colsample_bytree=0.5, # 0.8
-#                                 # booster = 'dart'
-#                                 ).fit(X_train, y_train)
-# y_pred = regr.predict(X_test)
-# y_pred = y_pred.reshape(-1,1)
-# y_pred = scaler.inverse_transform(y_pred)
-# y_test = scaler.inverse_transform(y_test)
+################
+# XGBoost
+################
+import xgboost
+regr = xgboost.XGBRegressor(n_estimators= 1000,  #800, 
+                                max_depth=16, # 7
+                                eta=0.02, # 0.1 
+                                subsample=1, # 0.7
+                                colsample_bytree=0.5, # 0.8
+                                # booster = 'dart'
+                                ).fit(X_train, y_train)
+y_pred = regr.predict(X_test)
+y_pred = y_pred.reshape(-1,1)
+y_pred = scaler.inverse_transform(y_pred)
+y_test = scaler.inverse_transform(y_test)
 ###########################
 
 import sklearn.metrics, math

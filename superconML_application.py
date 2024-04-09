@@ -280,7 +280,8 @@ data = Xn
 ###############
 ## plot results
 ###############
-df=pd.DataFrame(Xp[:,(3,30)])
+df=pd.DataFrame(Xp[:,(2,3,5,8,24,30)])
+# df=pd.DataFrame(Xp[:,(24,30)])
 df['c']='O'
 # cuprates_list=[]
 # ironbase_list=[]
@@ -297,7 +298,17 @@ for i in ironbase['DOPPED']:
     index=index=superconductors_list.index(i)
     df.loc[index,'c']='I'
 fig, ax = plt.subplots()
-ax.scatter(df[0], df[1],
+ax.scatter(df[0], df[5],
+            s=0.5,
+           c=df['c'].map(colors),
+           zorder=2)
+ax.set_xlabel("$\Delta S_{mix}$", fontsize = 20)
+ax.set_ylabel("$T_c$", fontsize = 14)
+# ax.set_title("Training data")
+plt.show()
+#
+fig, ax = plt.subplots()
+ax.scatter(df[1], df[5],
             s=0.5,
            c=df['c'].map(colors),
            zorder=2)
@@ -313,6 +324,26 @@ points = ax.scatter(smix, Mval, c=zhang_labels, s=0.1, cmap="plasma")
 f.colorbar(points)
 # plt.xlabel("$\Delta S_{mix}$", fontsize = 20)
 # plt.ylabel("Mean Valence EC (Mval)", fontsize = 14)
+plt.show()
+
+f, ax = plt.subplots()
+# points = ax.scatter(smix, vecs[:,8], c=zhang_labels, s=0.1, cmap="plasma")
+points = ax.scatter(smix, vecs[:,5], c=zhang_labels, s=0.1, cmap="plasma")
+# points = ax.scatter(smix, zhang_labels, c=zhang_labels, s=0.1, cmap="plasma")
+f.colorbar(points)
+# plt.xlabel("$\Delta S_{mix}$", fontsize = 20)
+# plt.ylabel("Mean Valence EC (Mval)", fontsize = 14)
+plt.show()
+
+fig, ax = plt.subplots()
+ax.scatter(smix, #Mval, 
+            vecs[:,8],
+            s=0.5,
+           c=df['c'].map(colors),
+           zorder=2)
+ax.set_xlabel("$\Delta S_{mix}$", fontsize = 20)
+ax.set_ylabel("$T_c$", fontsize = 14)
+# ax.set_title("Training data")
 plt.show()
 # fig, ax = plt.subplots()
 # ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)

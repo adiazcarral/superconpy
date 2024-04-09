@@ -103,6 +103,15 @@ plt.title('Average e/a versus Tc')
 plt.colorbar(label='Measured TC')
 plt.show()
 
+# Plotting average number of itinerant electrons per atom (e/a) against Tc
+plt.figure(figsize=(10, 6))
+plt.scatter(electronegativity_list, y, c=y, cmap='viridis', edgecolors='k', s=50)
+plt.xlabel('Electronegativity')
+plt.ylabel('Tc')
+plt.title('Electronegativity versus Tc')
+plt.colorbar(label='Measured TC')
+plt.show()
+
 # Additional evaluation and plotting code
 print("\n")
 print("Mean absolute error (MAE):      %f" % sklearn.metrics.mean_absolute_error(y_test, y_pred))

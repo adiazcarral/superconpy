@@ -103,12 +103,12 @@ X = np.concatenate((
 ), axis=1)
 print(np.shape(X))
 # Labels
-y = df_3DSC['tc'].values
+yy = df_3DSC['tc'].values
 
 # Remove outliers
 outliers_smix = np.argwhere(np.isnan(smix))
 X = np.delete(X, outliers_smix[:, 0], 0)
-y = np.delete(y, outliers_smix[:, 0], 0)
+y = np.delete(yy, outliers_smix[:, 0], 0)
 
 # FEATURE SELECTION
 X = pd.DataFrame(X)
@@ -131,53 +131,57 @@ yn_test = yn[0:5772]
 # TRAIN-TEST SPLIT
 X_train, X_test, y_train, y_test = train_test_split(Xn_test, yn_test, test_size=0.15, random_state=15, shuffle=True)
 
-# XGBoost
-regr = xgboost.XGBRegressor(
-    n_estimators=1000,  # 800,
-    max_depth=16,  # 7
-    eta=0.02,  # 0.1
-    subsample=1,  # 0.7
-    colsample_bytree=0.5,  # 0.8
-    # booster='dart'
-).fit(X_train, y_train)
+# # XGBoost
+# regr = xgboost.XGBRegressor(
+#     n_estimators=1000,  # 800,
+#     max_depth=16,  # 7
+#     eta=0.02,  # 0.1
+#     subsample=1,  # 0.7
+#     colsample_bytree=0.5,  # 0.8
+#     # booster='dart'
+# ).fit(X_train, y_train)
 
-# PREDICTION
-y_pred = regr.predict(X_test)
-y_pred = y_pred.reshape(-1, 1)
-y_pred = scaler.inverse_transform(y_pred)
-y_test = scaler.inverse_transform(y_test)
+# # PREDICTION
+# y_pred = regr.predict(X_test)
+# y_pred = y_pred.reshape(-1, 1)
+# y_pred = scaler.inverse_transform(y_pred)
+# y_test = scaler.inverse_transform(y_test)
 
-# Replace zeros and negative values in y_pred with a small non-zero value
-small_value = 1e-10
-y_pred[y_pred <= 0] = small_value
+# # Replace zeros and negative values in y_pred with a small non-zero value
+# small_value = 1e-10
+# y_pred[y_pred <= 0] = small_value
 
-# PERFORMANCE METRICS
-mae = sklearn.metrics.mean_absolute_error(y_test, y_pred)
-mse = sklearn.metrics.mean_squared_error(y_test, y_pred)
-msle = sklearn.metrics.mean_squared_log_error(y_test, y_pred)
-rmse = math.sqrt(mse)
-r2 = sklearn.metrics.r2_score(y_test, y_pred)
+# # PERFORMANCE METRICS
+# mae = sklearn.metrics.mean_absolute_error(y_test, y_pred)
+# mse = sklearn.metrics.mean_squared_error(y_test, y_pred)
+# msle = sklearn.metrics.mean_squared_log_error(y_test, y_pred)
+# rmse = math.sqrt(mse)
+# r2 = sklearn.metrics.r2_score(y_test, y_pred)
 
-# PRINT METRICS
-print("\nMean absolute error (MAE):      %f" % mae)
-print("Mean squared error (MSE):       %f" % mse)
-print("Mean squared logarithmic error (MSLE): %f" % msle)
-print("Root mean squared error (RMSE): %f" % rmse)
-print("R square (R^2):                 %f" % r2)
+# # PRINT METRICS
+# print("\nMean absolute error (MAE):      %f" % mae)
+# print("Mean squared error (MSE):       %f" % mse)
+# print("Mean squared logarithmic error (MSLE): %f" % msle)
+# print("Root mean squared error (RMSE): %f" % rmse)
+# print("R square (R^2):                 %f" % r2)
 
-# PLOT RESULTS
-fig, ax = plt.subplots()
-ax.scatter(y_test, y_pred, s=0.4, color='k', zorder=2)
-ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r-', lw=3, zorder=1)
-ax.set_xlabel('Measured')
-ax.set_ylabel('Predicted')
-plt.show()
+# # PLOT RESULTS
+# fig, ax = plt.subplots()
+# ax.scatter(y_test, y_pred, s=0.4, color='k', zorder=2)
+# ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r-', lw=3, zorder=1)
+# ax.set_xlabel('Measured')
+# ax.set_ylabel('Predicted')
+# plt.show()
 
 # Plotting average number of itinerant electrons per atom (e/a) against Tc
 plt.figure(figsize=(10, 6))
-plt.scatter(electronegativity_list, y, c=y, cmap='viridis', edgecolors='k', s=50)
-# plt.xlabel('Electronegativity')
-# plt.ylabel('Tc')
+# plt.scatter(lattice_vector_a/lattice_vector_c, vecs[:, 9], c=yy, cmap='viridis', edgecolors='k', s=20)
+plt.scatter(Maradius, lattice_vector_a/lattice_vector_c, 
+            # vecs[:, 9], 
+            c=yy, cmap='viridis', #edgecolors='k', 
+            s=1)
+plt.xlabel('feature x')
+plt.ylabel('feature y')
 # plt.title('Electronegativity versus Tc')
-# plt.colorbar(label='Measured TC')
+plt.colorbar(label='Measured TC')
 plt.show()

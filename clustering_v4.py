@@ -246,7 +246,13 @@ data = Xn
 
 # # TSNE 2D ############
 # ###################
-tsne = TSNE(n_components=2, verbose=1, random_state=10)
+# Initialize t-SNE object with custom parameters
+tsne = TSNE(n_components=2, 
+            perplexity=70, 
+            learning_rate=200, 
+            n_iter=1000,
+            verbose = 1,
+            random_state=42)
 z = tsne.fit_transform(data) 
 X_transformed = z
 ###############
@@ -275,7 +281,7 @@ ax.scatter(df[0], df[1],
            zorder=2)
 ax.set_ylabel("TSNE Feature #1")
 ax.set_xlabel("TSNE Feature #0")
-ax.set_title("Training data")
+# ax.set_title("Training data")
 plt.show()
 # fig, ax = plt.subplots()
 # ax.scatter(X_transformed[:, 0], X_transformed[:, 1], s=s, color = color, zorder=2)

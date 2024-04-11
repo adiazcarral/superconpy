@@ -110,7 +110,7 @@ for group, color in colors.items():
 axs[1, 1].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=14)
 
 plt.tight_layout()
-plt.savefig("Tc_vs_Orbitals_Mval.png", dpi=600)
+plt.savefig("Tc_vs_Orbitals_Mval.png", dpi=300)
 plt.show()
 
 # Plot smix vs Orbitals without Tc colormap
@@ -129,7 +129,7 @@ cbar = plt.colorbar(sc, cax=cbar_ax)
 cbar.set_label('Tc', fontsize=16)
 
 plt.tight_layout()
-plt.savefig("smix_vs_Orbitals_Mval.png", dpi=600, bbox_inches='tight')  # Add bbox_inches='tight'
+plt.savefig("smix_vs_Orbitals_Mval.png", dpi=300, bbox_inches='tight')  # Add bbox_inches='tight'
 plt.show()
 
 # Plot smix vs Orbitals with group colormap
@@ -148,5 +148,5 @@ axs[1, 1].legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=14)
 
 
 plt.tight_layout()
-plt.savefig("smix_vs_Orbitals_Mval_group_colormap.png", dpi=600)
+plt.savefig("smix_vs_Orbitals_Mval_group_colormap.png", dpi=300)
 plt.show()

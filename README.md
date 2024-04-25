@@ -1,4 +1,4 @@
-# Superconductors Critical Temperature Prediction
+# superconpy: Superconductors Critical Temperature Prediction
 
 ## Abstract
 

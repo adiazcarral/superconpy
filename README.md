@@ -30,7 +30,3 @@ This project is licensed under the terms of the Creative Commons Attribution (CC
 ## Published Date
 
 5 April 2024
-
----
-
-Feel free to customize this README according to your preferences and add additional sections as needed.

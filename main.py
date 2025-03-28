@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Mar  2 10:58:26 2023
-
-@author: mroitegui
-"""
 
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
